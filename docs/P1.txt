@@ -1,6 +1,6 @@
 Personal Project
 P1:
-created "ui" package with main method
+created "main.ui" package with main method
 created 2 other methods in Main: applyJob() and statusUpdate()
 On running, it prints out the following statements from the methods:
 Job applied! Good Luck!
