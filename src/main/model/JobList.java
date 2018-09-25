@@ -34,9 +34,9 @@ public class JobList {
     }
 
 
-    // EFFECTS: return true if input index is within Job list range
-    public boolean validJoblistRange(int i) {
-        if (i <= jobs.size()- 1) {
+    // EFFECTS: return true if input index is not within Job list range
+    public boolean invalidJoblistRange(int i) {
+        if (i > jobs.size()- 1) {
             return true;
         }else {
             return false;

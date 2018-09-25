@@ -46,9 +46,9 @@ class JobListTest {
     void TesttvalidJoblistRange() {
         jobs.addJob("testTitle","testCompany");
         jobs.addJob("testTitle2","testCompany2");
-        assertFalse(jobs.validJoblistRange(2));
-        assertTrue(jobs.validJoblistRange(1));
-        assertTrue(jobs.validJoblistRange(0));
+        assertFalse(jobs.invalidJoblistRange(2));
+        assertTrue(jobs.invalidJoblistRange(1));
+        assertTrue(jobs.invalidJoblistRange(0));
     }
 
     // Test that job retrieved in index is correct

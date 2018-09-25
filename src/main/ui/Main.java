@@ -84,7 +84,7 @@ public class Main {
         List<Job> jobs = jl.getJobList();
         System.out.println("Select job # to edit.");
         inputEdit = Integer.parseInt(scanner.nextLine());
-        while (jl.validJoblistRange(inputEdit)) {
+        while (jl.invalidJoblistRange(inputEdit)) {
             System.out.println("Please enter valid job entry #.");
             System.out.println("Select job # to edit.");
             inputEdit = Integer.parseInt(scanner.nextLine());
