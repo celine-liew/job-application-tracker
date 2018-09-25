@@ -60,6 +60,8 @@ public class Main {
         }
     }
 
+    // REQUIRES: the job list must not be empty
+    // EFFECTS: prints the jobs list
     public void printJobs() {
         List<Job> jobs = jl.getJobList();
         int idx = 0;

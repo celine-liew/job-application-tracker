@@ -28,7 +28,7 @@ public class JobList {
         return jobs.isEmpty();
     }
 
-    //EFFECT: return joblist
+    //EFFECT: return job list
     public List<Job> getJobList() {
         return jobs;
     }

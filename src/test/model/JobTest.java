@@ -41,16 +41,17 @@ class JobTest {
         assertFalse(j.getJobTitle().equals("testjob1"));
     }
 
-    // Test that a valid company is retrieved
+
+    // Test that a valid company is retrieved from the job entry
     @Test
-    void TestsetCompany() {
+    void TestgettCompany() {
         assertEquals(j.getCompany(), ("testcompany"));
         assertFalse(j.getJobTitle().equals("testcompany1"));
     }
 
     // Test that a valid date is retrieved
     @Test
-    void TestgetDateApplied() {
+    void TestgetDateApplied(){
         j.dateApplied = LocalDate.of(2018,9,10);
         LocalDate testdate = LocalDate.of(2018,9,10);
         assertFalse(j.dateApplied.isBefore(testdate));
@@ -59,7 +60,7 @@ class JobTest {
 
     //Test the JobStatus is retrieved properly
     @Test
-    void getJobStatus() {
+    void TestgetJobStatus() {
         j.setJobStatus("teststatus1");
         assertEquals(j.getJobStatus(), "teststatus1");
         assertNotEquals(j.getJobStatus(),"teststatus2");
@@ -67,7 +68,7 @@ class JobTest {
 
     // Test that job status is changed to the new one
     @Test
-    void setJobStatus() {
+    void TestsetJobStatus() {
         j.setJobStatus("teststatus123");
         assertEquals(j.getJobStatus(), "teststatus123");
         assertFalse(j.getJobStatus().equals("teststatus2"));
