@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class JobTest {
@@ -12,35 +14,64 @@ class JobTest {
     @BeforeEach
     void setUp() {
         j = new Job("testjob", "testcompany");
+
     }
 
-    // Test that a valid job title is retrieved
+    // Test Constructor
     @Test
+    void TestConstructor() {
+        assertEquals(j.getJobTitle(),("testjob"));
+        assertFalse(j.getJobTitle().equals("testjob1"));
+
+        assertEquals(j.getCompany(), ("testcompany"));
+        assertFalse(j.getJobTitle().equals("testcompany1"));
+
+        // test that date is properly initialised
+        // info from https://stackoverflow.com/questions/15925509/java-compare-two-dates
+        j.dateApplied = LocalDate.of(2018,9,10);
+        LocalDate testdate = LocalDate.of(2018,9,10);
+        assertFalse(j.dateApplied.isBefore(testdate));
+        assertFalse(j.dateApplied.isAfter(testdate));
+    }
+
+    @Test
+    // Test get job is properly done.
     void TestgetJobTitle() {
-        assertTrue(j.getJobTitle().equals("testjob"));
+        assertEquals(j.getJobTitle(),("testjob"));
         assertFalse(j.getJobTitle().equals("testjob1"));
     }
 
     // Test that a valid company is retrieved
     @Test
     void TestsetCompany() {
-        assertTrue(j.getJobTitle().equals("testcompany"));
+        assertEquals(j.getCompany(), ("testcompany"));
         assertFalse(j.getJobTitle().equals("testcompany1"));
     }
 
     // Test that a valid date is retrieved
     @Test
     void TestgetDateApplied() {
-        assertTrue(j.getDateApplied().equals("today"));
-        assertFalse(j.getDateApplied().equals("yesterday"));
+        j.dateApplied = LocalDate.of(2018,9,10);
+        LocalDate testdate = LocalDate.of(2018,9,10);
+        assertFalse(j.dateApplied.isBefore(testdate));
+        assertFalse(j.dateApplied.isAfter(testdate));
     }
 
+    //Test the JobStatus is retrieved properly
     @Test
     void getJobStatus() {
+        j.setJobStatus("teststatus1");
+        assertEquals(j.getJobStatus(), "teststatus1");
+        assertNotEquals(j.getJobStatus(),"teststatus2");
     }
 
-    // Test that job status is changed if the new job status is not the same as current.
+    // Test that job status is changed to the new one
     @Test
     void setJobStatus() {
+        j.setJobStatus("teststatus123");
+        assertEquals(j.getJobStatus(), "teststatus123");
+        assertFalse(j.getJobStatus().equals("teststatus2"));
+
+
     }
 }

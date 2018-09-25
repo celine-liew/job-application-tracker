@@ -12,10 +12,10 @@ public class Main {
     // arrayList storing job objects
     // arrayList storing edit history
     JobList jl = new JobList();
+    Scanner scanner = new Scanner(System.in);
 
     public Main() {
 
-        Scanner scanner = new Scanner(System.in);
         String input;
         String inputJobTitle;
         String inputCompany;
@@ -26,6 +26,9 @@ public class Main {
                     "\n(3) Show jobs list.");
             input = scanner.nextLine();
 
+            // 1 - add new job
+            // 2 - update job status
+            // 3 - show job list
             if (input.equals("1")) {
                 System.out.println("you selected: " + input + " - Add new job.");
                 System.out.println("Enter job title:");
@@ -44,8 +47,9 @@ public class Main {
                 System.out.println();
                 printJobs();
                 System.out.println();
-                validJobEntry();
-
+                if (!jl.jobLisEmpty()) {
+                    statusUpdate();
+                }
             } else if (input.equals("3")) {
                 System.out.println("you selected: " + input + " - Show jobs list.");
                 System.out.println();
@@ -56,13 +60,14 @@ public class Main {
         }
     }
 
-
     public void printJobs() {
         List<Job> jobs = jl.getJobList();
         int idx = 0;
         if (jobs.size() > 0) {
             for (Job job : jl.getJobList()) {
-                System.out.println(idx + " " + job.getJobTitle() + " " + job.getCompany() + " Applied:" + job.getDateApplied());
+                System.out.println(idx + " " + job.getJobTitle() + " " + job.getCompany()
+                        + " Applied: " + job.getDateApplied()
+                        + " Status: " + job.getJobStatus()) ;
                 idx++;
             }
         } else {
@@ -70,29 +75,24 @@ public class Main {
         }
     }
 
-    public void validJobEntry() {
+    // MODIFIES: this
+    // EFFECTS: updates the job status of the job entry
+    public void statusUpdate() {
+        int inputEdit;
         List<Job> jobs = jl.getJobList();
-        String inputEdit;
-        Scanner scanner = new Scanner(System.in);
-        if (jobs.size() > 0) {
-            System.out.println("Select job # to edit.");
-            inputEdit = scanner.nextLine();
-            int edit = Integer.parseInt(inputEdit);
-            statusUpdate(edit);
-        }
-    }
-
-    public void statusUpdate(int i) {
-        List<Job> jobs = jl.getJobList();
-        if (i > jobs.size()-1) {
+        System.out.println("Select job # to edit.");
+        inputEdit = Integer.parseInt(scanner.nextLine());
+        while (jl.validJoblistRange(inputEdit)) {
             System.out.println("Please enter valid job entry #.");
-        } else {
-            System.out.println("You are updating the following job entry:\n" +
-                    i + " " + jobs.get(i).getJobTitle() + " " + jobs.get(i).getCompany() + " Applied:" + jobs.get(i).getDateApplied());
-            System.out.println();
+            System.out.println("Select job # to edit.");
+            inputEdit = Integer.parseInt(scanner.nextLine());
         }
-        //get user input to choose what status to update
-        System.out.println("Job Application Status Updated!\n");
+        Job jobtoedit = jl.getJob(inputEdit);
+        System.out.println("Enter new job status:");
+        String newStatus = scanner.nextLine();
+        jobtoedit.setJobStatus(newStatus);
+        jobtoedit.setDateLastChanged();
+        System.out.println("Job Application Status Updated to: " + newStatus + "!\n");
     }
 
     public static void main(String[] args) { new Main(); }
