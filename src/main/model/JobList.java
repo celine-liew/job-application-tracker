@@ -1,11 +1,35 @@
 package model;
 
+import Interfaces.Savable;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JobList {
 
-    private List<Job> jobs = new ArrayList<>();
+    protected List<Job> jobs = new ArrayList<>();
+    protected static final String filename = "inputFile.csv";
+
+    public JobList(List<List> jobLists) {
+        for (List<String> l : jobLists) {
+            restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4));
+        }
+    }
+
+    public JobList() {
+
+    }
+
+    public void saveJobs() throws IOException  {
+        Savable save = new Save(filename);
+        save.writeFile(jobs);
+    }
+    public void restoreJob(String jobTitle, String company, String dateApplied, String jobStatus, String dateLastChanged) {
+        Job job;
+        job = new Job(jobTitle, company, dateApplied, jobStatus, dateLastChanged);
+        jobs.add(job);
+    }
 
     // REQUIRES: jobTitle, company
     // MODIFIES: this
@@ -38,9 +62,8 @@ public class JobList {
     public boolean invalidJoblistRange(int i) {
         if (i > jobs.size()- 1) {
             return true;
-        }else {
-            return false;
         }
+        return false;
     }
 
 }

@@ -2,8 +2,10 @@ package main.ui;
 
 import model.Job;
 import model.JobList;
+import model.Load;
+import Interfaces.Loadable;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,19 +13,25 @@ public class Main {
 
     // arrayList storing job objects
     // arrayList storing edit history
-    JobList jl = new JobList();
+    JobList jl;
     Scanner scanner = new Scanner(System.in);
+    protected static final String filename = "inputFile.csv";
 
-    public Main() {
+    public Main() throws IOException {
 
         String input;
         String inputJobTitle;
         String inputCompany;
+        Loadable load = new Load(filename);
+        load.loadFile();
+        jl = new JobList(load.getParsedLines());
+
         while (true) {
             System.out.println("What would you like to do: " +
                     "\n(1) Add new Job application." +
                     "\n(2) Update job application status." +
-                    "\n(3) Show jobs list.");
+                    "\n(3) Show jobs list." +
+                    "\n(4) Save and exit.");
             input = scanner.nextLine();
 
             // 1 - add new job
@@ -55,6 +63,11 @@ public class Main {
                 System.out.println();
                 printJobs();
                 System.out.println();}
+
+            else if (input.equals("4")) {
+                jl.saveJobs();
+                return;
+            }
             //get user input to choose which to edit
             //edit object fields selected
         }
@@ -97,6 +110,6 @@ public class Main {
         System.out.println("Job Application Status Updated to: " + newStatus + "!\n");
     }
 
-    public static void main(String[] args) { new Main(); }
+    public static void main (String[] args) throws IOException { new Main(); }
 }
 

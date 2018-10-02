@@ -1,9 +1,11 @@
 package model;
 
+import Interfaces.JobInterface;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Job {
+public class Job implements JobInterface {
 
     private String jobTitle; //private so that it is not visible outside of this Class. All operations done by getters/setters.
     private String company;
@@ -15,11 +17,19 @@ public class Job {
     // MODIFIES: this
     // EFFECTS: creates new job object initialising private fields
     public Job(String jobTitle, String company){
-        this.company = company;
         this.jobTitle = jobTitle;
+        this.company = company;
         this.dateApplied = LocalDate.now(); //used Java's function.
         this.jobStatus = "Applied";  //hardcoding it currently.
         this.dateLastChanged = dateApplied;
+    }
+
+    public Job(String jobTitle, String company, String date, String jobStatus, String dateLastChanged){
+        this.jobTitle = jobTitle;
+        this.company = company;
+        this.dateApplied = LocalDate.now(); //used Java's function.
+        this.jobStatus = jobStatus;  //hardcoding it currently.
+        this.dateLastChanged = LocalDate.now();
     }
 
     // REQUIRES: nothing
@@ -39,10 +49,12 @@ public class Job {
     // REQUIRES: nothing
     // MODIFIES: nothing
     // EFFECTS: returns the date the job is applied
-    public LocalDate getDateApplied(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("L dd yyyy");
-        String datechanged = dateApplied.format(formatter);
-        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
+    public String getDateApplied(){
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
+//
+//        String datechanged = dateApplied.format(formatter);
+//        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
+        String parsedDate = dateApplied.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
         return parsedDate; }
 
     // MODIFIES: this
@@ -52,11 +64,12 @@ public class Job {
     }
 
     //EFFECTS: return the date of last changed
-    public LocalDate getDateLastChanged() {
+    public String getDateLastChanged() {
         //info from oracle documentation: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("L dd yyyy");
-        String datechanged = dateLastChanged.format(formatter);
-        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
+//        String datechanged = dateLastChanged.format(formatter);
+//        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
+        String parsedDate = dateLastChanged.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
         return parsedDate;
     }
 
