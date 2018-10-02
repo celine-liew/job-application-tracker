@@ -15,7 +15,7 @@ class SavableTest {
 
     PrintWriter writer;
     String filename = "testFile.csv";
-    Savable save;
+    //Savable save;
     JobList jobs;
     JobList j1;
 
@@ -23,13 +23,15 @@ class SavableTest {
     void setUp() throws IOException {
         jobs = new JobList();
         jobs.addJob("jobtitletest","companytest" );
-        save = new Save(filename);
+        //save = new Save(filename);
+        jobs.loadFile();
     }
 
     @Test
-    void testWriteFile() throws IOException {
-       save.writeFile(jobs.getJobList());
-       Loadable testload = new Load(filename);
+    void testWriteFile() throws Exception {
+        jobs.saveJobs();
+        //(jobs.getJobList());
+       Loadable testload = new JobList(filename);
        testload.loadFile();
        j1 = new JobList(testload.getParsedLines());
        Job j = j1.getJob(0);

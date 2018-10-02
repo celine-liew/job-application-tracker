@@ -2,7 +2,7 @@ package interfaceTest;
 
 import model.Job;
 import model.JobList;
-import model.Load;
+//import model.Load;
 import Interfaces.Loadable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,9 @@ class LoadableTest {
     Loadable load;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() throws Exception {
         filename = "testFile.csv";
-        load = new Load(filename);
+        load = new JobList(filename);
 
 
     }
@@ -48,7 +48,10 @@ class LoadableTest {
     @Test
     void testSplitOnComma()  throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(filename));
-        List<List> parsedLines = new ArrayList<>();
+        List<List>
+
+
+                parsedLines = new ArrayList<>();
         String s = "";
 
         for (String line : lines) {

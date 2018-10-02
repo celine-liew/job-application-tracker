@@ -11,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class JobListTest {
 
     private JobList jobs;
+    private List<String> lines;
+    private List<List> parsedLines = new ArrayList<>();
+    private String fileName;
 
     @BeforeEach
     void setUp() {
@@ -46,9 +49,9 @@ class JobListTest {
     void TesttvalidJoblistRange() {
         jobs.addJob("testTitle","testCompany");
         jobs.addJob("testTitle2","testCompany2");
-        assertFalse(jobs.invalidJoblistRange(2));
-        assertTrue(jobs.invalidJoblistRange(1));
-        assertTrue(jobs.invalidJoblistRange(0));
+        assertTrue(jobs.invalidJoblistRange(2));
+        assertFalse(jobs.invalidJoblistRange(1));
+        assertFalse(jobs.invalidJoblistRange(0));
     }
 
     // Test that job retrieved in index is correct

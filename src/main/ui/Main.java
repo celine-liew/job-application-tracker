@@ -2,7 +2,6 @@ package main.ui;
 
 import model.Job;
 import model.JobList;
-import model.Load;
 import Interfaces.Loadable;
 
 import java.io.IOException;
@@ -17,13 +16,13 @@ public class Main {
     Scanner scanner = new Scanner(System.in);
     protected static final String filename = "inputFile.csv";
 
-    public Main() throws IOException {
+    public Main() throws Exception {
 
         String input;
         String inputJobTitle;
         String inputCompany;
-        Loadable load = new Load(filename);
-        load.loadFile();
+        Loadable load = new JobList(filename);
+        //load.loadFile();
         jl = new JobList(load.getParsedLines());
 
         while (true) {
@@ -110,6 +109,6 @@ public class Main {
         System.out.println("Job Application Status Updated to: " + newStatus + "!\n");
     }
 
-    public static void main (String[] args) throws IOException { new Main(); }
+    public static void main (String[] args) throws Exception { new Main(); }
 }
 
