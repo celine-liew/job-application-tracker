@@ -60,4 +60,5 @@ class LoadableTest {
         }
         assertEquals(s, "jobTitle: jobtitletest ");
     }
+
 }

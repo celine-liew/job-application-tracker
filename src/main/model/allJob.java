@@ -1,5 +1,7 @@
 package model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -12,9 +14,11 @@ public class allJob extends Job {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
         this.dateApplied = LocalDate.parse(dateApplied, formatter); //used Java's function.
         this.dateLastChanged = LocalDate.parse(dateLastChanged, formatter);
+        this.jobStatus = jobStatus;
     }
 
     public void printApplied(){
-        System.out.println("All jobs loaded!!!! ");
+             System.out.println("All jobs loaded!!!!");
+
     }
 }

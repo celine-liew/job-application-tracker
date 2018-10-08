@@ -1,6 +1,5 @@
 package main.ui;
 
-import model.CoopJob;
 import model.Job;
 import model.JobList;
 import Interfaces.Loadable;
@@ -36,7 +35,7 @@ public class Main {
                     "\n(4) Save and exit.");
             input = scanner.nextLine();
 
-            // 1 - add new job - choose job type.
+            // 1 - add new job -> choose job type.
             // 2 - update job status
             // 3 - show job list
             if (input.equals("1")) {

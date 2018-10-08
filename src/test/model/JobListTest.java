@@ -11,16 +11,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class JobListTest {
 
     private JobList jobs;
-    private List<String> lines;
-    private List<List> parsedLines = new ArrayList<>();
-    private String fileName;
+    //private List<String> lines;
+    //private List<List> parsedLines = new ArrayList<>();
+    //private String fileName;
 
     @BeforeEach
     void setUp() {
         jobs = new JobList();
     }
 
-    // Test that job is added to list correctly
+    //Test loading of joblist with right system printed
+    //    jobs.restoreJob("coop","testTitle","testCompany", "Sep 30 2018",
+//                "phone call", "Oct 01 2018");
+
     @Test
     void TestaddJob() {
         jobs.addJob("coop","testTitle","testCompany");
@@ -68,9 +71,11 @@ class JobListTest {
 
     // Test that job list is retrieved correctly.
     @Test
-    void getJobList() {
+    void testgetJobList() {
         jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertTrue(jobs.getJobList().contains(j));
     }
+
+
 }
