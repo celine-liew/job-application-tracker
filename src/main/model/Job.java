@@ -5,18 +5,20 @@ import Interfaces.JobInterface;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Job implements JobInterface {
+public abstract class Job implements JobInterface {
 
-    private String jobTitle; //private so that it is not visible outside of this Class. All operations done by getters/setters.
-    private String company;
+    protected String jobType = "";
+    protected String jobTitle; //private so that it is not visible outside of this Class. All operations done by getters/setters.
+    protected String company;
     public LocalDate dateApplied; //Changed to date time function in Java. Set to public for testing.
-    private String jobStatus;
-    private LocalDate dateLastChanged;
+    protected String jobStatus;
+    protected LocalDate dateLastChanged;
 
     // REQUIRES: jobTitle and company
     // MODIFIES: this
     // EFFECTS: creates new job object initialising private fields
     public Job(String jobTitle, String company){
+        this.jobType = "";
         this.jobTitle = jobTitle;
         this.company = company;
         this.dateApplied = LocalDate.now(); //used Java's function.
@@ -24,13 +26,21 @@ public class Job implements JobInterface {
         this.dateLastChanged = dateApplied;
     }
 
-    public Job(String jobTitle, String company, String date, String jobStatus, String dateLastChanged){
+    public Job(String jobType, String jobTitle, String company, String date, String jobStatus, String dateLastChanged){
+        this.jobType = jobType;
         this.jobTitle = jobTitle;
         this.company = company;
         this.dateApplied = LocalDate.now(); //used Java's function.
         this.jobStatus = jobStatus;  //hardcoding it currently.
         this.dateLastChanged = LocalDate.now();
     }
+
+
+    abstract void printApplied();
+
+    public String getJobType() {
+            return this.jobType;
+        }
 
     // REQUIRES: nothing
     // MODIFIES: nothing
@@ -86,5 +96,7 @@ public class Job implements JobInterface {
     public void setJobStatus(String jobStatus){
         this.jobStatus = jobStatus;
     }
+
+
 
 }

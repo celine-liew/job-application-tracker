@@ -23,7 +23,7 @@ class JobListTest {
     // Test that job is added to list correctly
     @Test
     void TestaddJob() {
-        jobs.addJob("testTitle","testCompany");
+        jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertTrue(jobs.getJobList().contains(j));
         assertEquals(j.getJobTitle(),"testTitle");
@@ -39,7 +39,7 @@ class JobListTest {
     // Test that the job list returns false if empty
     @Test
     void TestjobLisNotEmpty() {
-        jobs.addJob("testTitle","testCompany");
+        jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertFalse(jobs.jobLisEmpty());
     }
@@ -47,8 +47,8 @@ class JobListTest {
     // Test that out of bound index returns false, and in-range index returns true
     @Test
     void TesttvalidJoblistRange() {
-        jobs.addJob("testTitle","testCompany");
-        jobs.addJob("testTitle2","testCompany2");
+        jobs.addJob("coop","testTitle","testCompany");
+        jobs.addJob("coop","testTitle2","testCompany2");
         assertTrue(jobs.invalidJoblistRange(2));
         assertFalse(jobs.invalidJoblistRange(1));
         assertFalse(jobs.invalidJoblistRange(0));
@@ -57,8 +57,8 @@ class JobListTest {
     // Test that job retrieved in index is correct
     @Test
     void TestgetJob() {
-        jobs.addJob("testTitle","testCompany");
-        jobs.addJob("testTitle2","testCompany2");
+        jobs.addJob("coop","testTitle","testCompany");
+        jobs.addJob("coop","testTitle2","testCompany2");
         assertTrue(jobs.getJob(0 ).getCompany().equals("testCompany"));
         assertTrue(jobs.getJob(1 ).getCompany().equals("testCompany2"));
         assertFalse(jobs.getJob(0 ).getCompany().equals("testCompany2"));
@@ -69,7 +69,7 @@ class JobListTest {
     // Test that job list is retrieved correctly.
     @Test
     void getJobList() {
-        jobs.addJob("testTitle","testCompany");
+        jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertTrue(jobs.getJobList().contains(j));
     }

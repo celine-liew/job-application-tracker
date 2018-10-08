@@ -22,7 +22,7 @@ class SavableTest {
     @BeforeEach
     void setUp() throws IOException {
         jobs = new JobList();
-        jobs.addJob("jobtitletest","companytest" );
+        jobs.addJob("Coop","jobtitletest","companytest");
         //save = new Save(filename);
         jobs.loadFile();
     }

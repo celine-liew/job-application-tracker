@@ -1,5 +1,6 @@
 package main.ui;
 
+import model.CoopJob;
 import model.Job;
 import model.JobList;
 import Interfaces.Loadable;
@@ -21,11 +22,13 @@ public class Main {
         String input;
         String inputJobTitle;
         String inputCompany;
+        String jobType;
         Loadable load = new JobList(filename);
         //load.loadFile();
         jl = new JobList(load.getParsedLines());
 
         while (true) {
+            System.out.println();
             System.out.println("What would you like to do: " +
                     "\n(1) Add new Job application." +
                     "\n(2) Update job application status." +
@@ -33,7 +36,7 @@ public class Main {
                     "\n(4) Save and exit.");
             input = scanner.nextLine();
 
-            // 1 - add new job
+            // 1 - add new job - choose job type.
             // 2 - update job status
             // 3 - show job list
             if (input.equals("1")) {
@@ -42,13 +45,14 @@ public class Main {
                 inputJobTitle = scanner.nextLine();
                 System.out.println("Enter company applied:");
                 inputCompany = scanner.nextLine();
-
-                jl.addJob(inputJobTitle, inputCompany);
-                System.out.println("Job applied! Good Luck!");
+                System.out.println("Choose job type:\n" +
+                        "1)Coop\n" +
+                        "2)Full-time");
+                jobType = scanner.nextLine();
+                jl.addJob(jobType, inputJobTitle, inputCompany);
                 System.out.println();
                 printJobs();
                 System.out.println();
-
             } else if (input.equals("2")) {
                 System.out.println("you selected: " + input + " - Update job application status.");
                 System.out.println();
@@ -61,9 +65,8 @@ public class Main {
                 System.out.println("you selected: " + input + " - Show jobs list.");
                 System.out.println();
                 printJobs();
-                System.out.println();}
-
-            else if (input.equals("4")) {
+                System.out.println();
+            } else if (input.equals("4")) {
                 jl.saveJobs();
                 return;
             }
@@ -74,12 +77,13 @@ public class Main {
 
     // REQUIRES: the job list must not be empty
     // EFFECTS: prints the jobs list
-    public void printJobs() {
+    public void printJobs(){
         List<Job> jobs = jl.getJobList();
         int idx = 0;
         if (jobs.size() > 0) {
             for (Job job : jl.getJobList()) {
-                System.out.println(idx + " " + job.getJobTitle() + " " + job.getCompany()
+                System.out.println(idx + " " + job.getJobType() + " "
+                        + job.getJobTitle() + " " + job.getCompany()
                         + " Applied: " + job.getDateApplied()
                         + " Status: " + job.getJobStatus()) ;
                 idx++;

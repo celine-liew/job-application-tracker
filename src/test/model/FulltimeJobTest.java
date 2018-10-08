@@ -7,13 +7,13 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class JobTest {
+class FulltimeJobTest {
 
     private Job j;
 
     @BeforeEach
     void setUp() {
-        j = new Job("testjob", "testcompany");
+        j = new FulltimeJob("fulltime", "testjob", "testcompany");
 
     }
 

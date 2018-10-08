@@ -18,6 +18,7 @@ public class JobList implements Savable, Loadable {
     PrintWriter writer;
     private List<String> lines;
     private List<List> parsedLines = new ArrayList<>();
+    private allJob restorejob;
 
 
     public JobList(String filename) throws Exception{
@@ -26,8 +27,9 @@ public class JobList implements Savable, Loadable {
 
     public JobList(List<List> jobLists) {
         for (List<String> l : jobLists) {
-            restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4));
+            restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4),l.get(5));
         }
+        restorejob.printApplied();
     }
 
     public JobList() {
@@ -37,19 +39,23 @@ public class JobList implements Savable, Loadable {
    public void saveJobs() throws IOException  {
         Save(filename);
     }
-    public void restoreJob(String jobTitle, String company, String dateApplied, String jobStatus, String dateLastChanged) {
-        Job job;
-        job = new Job(jobTitle, company, dateApplied, jobStatus, dateLastChanged);
-        jobs.add(job);
+    public void restoreJob(String jobType, String jobTitle, String company, String dateApplied, String jobStatus, String dateLastChanged) {
+        restorejob = new allJob(jobType,jobTitle, company, dateApplied, jobStatus, dateLastChanged);
+        jobs.add(restorejob);
     }
 
     // REQUIRES: jobTitle, company
     // MODIFIES: this
     // EFFECTS: creates a new job and add to job list.
-    public void addJob(String jobTitle, String company) {
+    public void addJob(String jobType, String jobTitle, String company) {
         Job job;
-        job = new Job(jobTitle, company);
+        if (jobType.equalsIgnoreCase("1")){
+            job = new CoopJob(jobType, jobTitle, company);
+        } else {
+            job = new FulltimeJob(jobType, jobTitle, company);
+        }
         jobs.add(job);
+        job.printApplied();
     }
 
     // REQUIRES: i is within job list range
@@ -87,6 +93,8 @@ public class JobList implements Savable, Loadable {
     public void writeFile(List<Job> jobs){
         //parsed info
         for(Job job : jobs){
+            writer.append(String.valueOf(job.getJobType()));
+            addComa();
             writer.append(String.valueOf(job.getJobTitle()));
             addComa();
             writer.append(job.getCompany());
@@ -111,11 +119,12 @@ public class JobList implements Savable, Loadable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnComma(line);
             parsedLines.add(partsOfLine);
-            System.out.print("jobTitle: " + partsOfLine.get(0) + " ");
-            System.out.print("company: " + partsOfLine.get(1) + " ");
-            System.out.print("dateApplied: " + partsOfLine.get(2) + " ");
-            System.out.print("jobStatus: " + partsOfLine.get(3) + " ");
-            System.out.println("dateLastChanged: " + partsOfLine.get(4));
+            System.out.print("jobType: " + partsOfLine.get(0) + " ");
+            System.out.print("jobTitle: " + partsOfLine.get(1) + " ");
+            System.out.print("company: " + partsOfLine.get(2) + " ");
+            System.out.print("dateApplied: " + partsOfLine.get(3) + " ");
+            System.out.print("jobStatus: " + partsOfLine.get(4) + " ");
+            System.out.println("dateLastChanged: " + partsOfLine.get(5));
         }
     }
 

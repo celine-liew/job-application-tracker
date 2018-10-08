@@ -25,7 +25,6 @@ class LoadableTest {
         filename = "testFile.csv";
         load = new JobList(filename);
 
-
     }
     @Test
     void testLoadFile() throws IOException {
