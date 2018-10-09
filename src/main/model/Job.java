@@ -7,12 +7,13 @@ import java.time.format.DateTimeFormatter;
 
 public abstract class Job implements JobInterface {
 
-    protected String jobType = "";
+    protected String jobType;
     protected String jobTitle; //private so that it is not visible outside of this Class. All operations done by getters/setters.
     protected String company;
     public LocalDate dateApplied; //Changed to date time function in Java. Set to public for testing.
     protected String jobStatus;
     protected LocalDate dateLastChanged;
+    public final String APPLIED = "Applied";
 
     // REQUIRES: jobTitle and company
     // MODIFIES: this
@@ -22,7 +23,7 @@ public abstract class Job implements JobInterface {
         this.jobTitle = jobTitle;
         this.company = company;
         this.dateApplied = LocalDate.now(); //used Java's function.
-        this.jobStatus = "Applied";  //hardcoding it currently.
+        this.jobStatus = APPLIED;  //hardcoding it currently.
         this.dateLastChanged = dateApplied;
     }
 
@@ -34,7 +35,6 @@ public abstract class Job implements JobInterface {
         this.jobStatus = jobStatus;  //hardcoding it currently.
         this.dateLastChanged = LocalDate.now();
     }
-
 
     abstract void printApplied();
 
@@ -61,7 +61,6 @@ public abstract class Job implements JobInterface {
     // EFFECTS: returns the date the job is applied
     public String getDateApplied(){
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
-//
 //        String datechanged = dateApplied.format(formatter);
 //        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
         String parsedDate = dateApplied.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
@@ -76,9 +75,6 @@ public abstract class Job implements JobInterface {
     //EFFECTS: return the date of last changed
     public String getDateLastChanged() {
         //info from oracle documentation: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
-//        String datechanged = dateLastChanged.format(formatter);
-//        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
         String parsedDate = dateLastChanged.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
         return parsedDate;
     }

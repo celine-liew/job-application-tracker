@@ -56,7 +56,7 @@ class LoadableTest {
         for (String line : lines) {
             ArrayList<String> partsOfLine = load.splitOnComma(line);
             parsedLines.add(partsOfLine);
-            s = "jobTitle: " + partsOfLine.get(0) + " ";
+            s = "jobTitle: " + partsOfLine.get(1) + " ";
         }
         assertEquals(s, "jobTitle: jobtitletest ");
     }
