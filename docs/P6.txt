@@ -1,0 +1,3 @@
+P6:
+Added Exceptions handling.
+Unchecked exceptions added.
