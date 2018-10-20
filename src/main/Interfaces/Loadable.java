@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Loadable {
 
-    public void loadFile() throws IOException;
+    public void loadFile(String filename) throws IOException;
 
     public List<List> getParsedLines();
 

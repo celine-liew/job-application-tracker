@@ -1,5 +1,7 @@
 package model;
 
+import Exceptions.InvalidChoiceException;
+import Exceptions.InvalidEntryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +14,8 @@ class CoopJobTest {
     private Job j;
 
     @BeforeEach
-    void setUp() {
-        j = new CoopJob("fulltime", "testjob", "testcompany");
+    void setUp() throws InvalidEntryException  {
+        j = new CoopJob( "testjob", "testcompany");
 
     }
 
@@ -72,7 +74,40 @@ class CoopJobTest {
         j.setJobStatus("teststatus123");
         assertEquals(j.getJobStatus(), "teststatus123");
         assertFalse(j.getJobStatus().equals("teststatus2"));
+    }
 
+    @Test
+    void testInvalidChoiceException() {
+        int coopTerm = 0;
+        try {j.InvalidChoice(coopTerm);
+            fail("no exception thrown when it should be");
+        } catch (InvalidChoiceException e) {
+        } catch (NumberFormatException e) {
+            fail("NumberFormatException thrown when shouldn't");
+        }
+    }
 
+    @Test
+    void testInvalidChoiceNumberException() {
+        String toparse = "str";
+        try {int coopTerm = Integer.parseInt(toparse);
+            j.InvalidChoice(coopTerm);
+            fail("no exception thrown when it should be");
+        } catch (InvalidChoiceException e) {
+            fail("InvalidChoiceException thrown when it should not");
+        } catch (NumberFormatException e) {
+
+        }
+    }
+
+    @Test
+    void testInvalidChoiceNoException() {
+        int coopTerm = 1;
+        try {j.InvalidChoice(coopTerm);
+        } catch (InvalidChoiceException e) {
+            fail("InvalidChoiceException thrown when it should not");
+        } catch (NumberFormatException e) {
+            fail("NumberFormatException thrown when shouldn't");
+        }
     }
 }

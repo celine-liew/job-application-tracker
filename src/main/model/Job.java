@@ -1,11 +1,14 @@
 package model;
 
+import Exceptions.InvalidChoiceException;
+import Exceptions.InvalidEntryException;
 import Interfaces.JobInterface;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.lang.String;
 
-public abstract class Job implements JobInterface {
+public abstract class Job implements JobInterface  {
 
     protected String jobType;
     protected String jobTitle; //private so that it is not visible outside of this Class. All operations done by getters/setters.
@@ -14,27 +17,30 @@ public abstract class Job implements JobInterface {
     protected String jobStatus;
     protected LocalDate dateLastChanged;
     public final String APPLIED = "Applied";
+    protected String coopDuration;
 
-    // REQUIRES: jobTitle and company
+    // REQUIRES: jobTitle and company to be valid
     // MODIFIES: this
     // EFFECTS: creates new job object initialising private fields
-    public Job(String jobTitle, String company){
-        this.jobType = "";
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.dateApplied = LocalDate.now(); //used Java's function.
-        this.jobStatus = APPLIED;  //hardcoding it currently.
-        this.dateLastChanged = dateApplied;
+    public Job(String jobTitle, String company) throws InvalidEntryException {
+
+            this.jobType = "";
+            this.jobTitle = jobTitle;
+            this.company = company;
+            this.dateApplied = LocalDate.now(); //used Java's function.
+            this.jobStatus = APPLIED;  //hardcoding it currently.
+            this.dateLastChanged = dateApplied;
+            this.coopDuration = "n/a";
     }
 
-    public Job(String jobType, String jobTitle, String company, String date, String jobStatus, String dateLastChanged){
-        this.jobType = jobType;
-        this.jobTitle = jobTitle;
-        this.company = company;
-        this.dateApplied = LocalDate.now(); //used Java's function.
-        this.jobStatus = jobStatus;  //hardcoding it currently.
-        this.dateLastChanged = LocalDate.now();
-    }
+//    public Job(String jobType, String jobTitle, String company, String date, String jobStatus, String dateLastChanged){
+//        this.jobType = jobType;
+//        this.jobTitle = jobTitle;
+//        this.company = company;
+//        this.dateApplied = LocalDate.now(); //used Java's function.
+//        this.jobStatus = jobStatus;  //hardcoding it currently.
+//        this.dateLastChanged = LocalDate.now();
+//    }
 
     abstract void printApplied();
 
@@ -93,6 +99,11 @@ public abstract class Job implements JobInterface {
         this.jobStatus = jobStatus;
     }
 
+    public void setCoopDuration(String coopDuration) {this.coopDuration = coopDuration;}
 
+    public String getCoopDuration () {return coopDuration;}
+
+
+    public void InvalidChoice(int choice) throws InvalidChoiceException {}
 
 }

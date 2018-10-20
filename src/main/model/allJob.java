@@ -1,13 +1,15 @@
 package model;
 
+import Exceptions.InvalidEntryException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class allJob extends Job {
 
-    //EFFECTS: re-create jobs from load
+    //EFFECTS: re-create jobs
     public allJob(String jobType, String jobTitle, String company,
-                  String dateApplied, String jobStatus, String dateLastChanged) {
+                  String dateApplied, String jobStatus, String dateLastChanged, String coopDuration) throws InvalidEntryException {
         //super(jobType,jobTitle, company, dateApplied, jobStatus, dateLastChanged);
         super(jobTitle, company);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
@@ -15,6 +17,7 @@ public class allJob extends Job {
         this.dateLastChanged = LocalDate.parse(dateLastChanged, formatter);
         this.jobStatus = jobStatus;
         this.jobType = jobType;
+        this.coopDuration = coopDuration;
     }
 
     public void printApplied(){

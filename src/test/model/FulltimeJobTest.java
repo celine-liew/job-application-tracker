@@ -1,5 +1,6 @@
 package model;
 
+import Exceptions.InvalidEntryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,8 @@ class FulltimeJobTest {
     private Job j;
 
     @BeforeEach
-    void setUp() {
-        j = new FulltimeJob("fulltime", "testjob", "testcompany");
+    void setUp() throws InvalidEntryException {
+        j = new FulltimeJob("testjob", "testcompany");
 
     }
 

@@ -1,5 +1,6 @@
 package model;
 
+import Exceptions.InvalidEntryException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ class JobListTest {
 //                "phone call", "Oct 01 2018");
 
     @Test
-    void TestaddJob() {
+    void TestaddJob() throws InvalidEntryException {
         jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertTrue(jobs.getJobList().contains(j));
@@ -41,7 +42,7 @@ class JobListTest {
 
     // Test that the job list returns false if empty
     @Test
-    void TestjobLisNotEmpty() {
+    void TestjobLisNotEmpty() throws InvalidEntryException{
         jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertFalse(jobs.jobLisEmpty());
@@ -49,7 +50,7 @@ class JobListTest {
 
     // Test that out of bound index returns false, and in-range index returns true
     @Test
-    void TesttvalidJoblistRange() {
+    void TesttvalidJoblistRange() throws InvalidEntryException {
         jobs.addJob("coop","testTitle","testCompany");
         jobs.addJob("coop","testTitle2","testCompany2");
         assertTrue(jobs.invalidJoblistRange(2));
@@ -59,7 +60,7 @@ class JobListTest {
 
     // Test that job retrieved in index is correct
     @Test
-    void TestgetJob() {
+    void TestgetJob() throws InvalidEntryException {
         jobs.addJob("coop","testTitle","testCompany");
         jobs.addJob("coop","testTitle2","testCompany2");
         assertTrue(jobs.getJob(0 ).getCompany().equals("testCompany"));
@@ -71,7 +72,7 @@ class JobListTest {
 
     // Test that job list is retrieved correctly.
     @Test
-    void testgetJobList() {
+    void testgetJobList() throws InvalidEntryException{
         jobs.addJob("coop","testTitle","testCompany");
         Job j = jobs.getJob(0);
         assertTrue(jobs.getJobList().contains(j));

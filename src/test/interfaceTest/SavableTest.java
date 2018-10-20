@@ -1,5 +1,6 @@
 package interfaceTest;
 
+import Exceptions.InvalidEntryException;
 import Interfaces.Loadable;
 import Interfaces.Savable;
 import model.*;
@@ -20,22 +21,28 @@ class SavableTest {
     JobList j1;
 
     @BeforeEach
-    void setUp() throws IOException {
+    void setUp() throws IOException, InvalidEntryException  {
         jobs = new JobList();
-        jobs.addJob("Coop","jobtitletest","companytest");
         //save = new Save(filename);
-        jobs.loadFile();
+        jobs.loadFile(filename);
     }
 
     @Test
-    void testWriteFile() throws Exception {
-        jobs.saveJobs();
-        //(jobs.getJobList());
-       Loadable testload = new JobList(filename);
-       testload.loadFile();
-       j1 = new JobList(testload.getParsedLines());
-       Job j = j1.getJob(0);
-       assertEquals(j.getCompany(),"companytest");
+    void testWriteFile() {
+//        Job coopJob = new CoopJob("intern","company");
+//        ((CoopJob) coopJob).setCoopDuration("1 year");
+        try {
+            jobs.addJob("2", "job1", "company");
+            jobs.saveJobs(filename);
+            //(jobs.getJobList());
+            Loadable testload = new JobList(filename);
+            testload.loadFile(filename);
+            j1 = new JobList(testload.getParsedLines());
+            Job j = j1.getJob(1);
+            assertEquals(j.getCompany(), "company");
+        } catch (Exception e) {
+            fail("Exception thrown when shouldn't");
+        }
     }
 
 }
