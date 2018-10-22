@@ -2,7 +2,7 @@ package model;
 
 import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
-import Exceptions.InvalidStringException;
+import Interfaces.JoblistInterface;
 import Interfaces.Loadable;
 import Interfaces.Savable;
 
@@ -15,17 +15,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class JobList implements Savable, Loadable {
+public class JobList implements Savable, Loadable, JoblistInterface {
 
-    protected List<Job> jobs = new ArrayList<>();
-    protected String filename;
+    protected List<Job> jobs;
     PrintWriter writer;
     private List<String> lines;
     private List<List> parsedLines = new ArrayList<>();
     private allJob restorejob;
     Scanner scanner = new Scanner(System.in);
-    private int coopTerm;
-    boolean retryEntry;
+        boolean retryEntry;
 
 
     public JobList(String filename) throws IOException {
@@ -33,6 +31,7 @@ public class JobList implements Savable, Loadable {
     }
 
     public JobList(List<List> jobLists) throws InvalidEntryException {
+        jobs = new ArrayList<>();
         for (List<String> l : jobLists) {
             restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4),l.get(5), l.get(6));
         }
@@ -40,7 +39,7 @@ public class JobList implements Savable, Loadable {
     }
 
     public JobList() {
-
+        jobs = new ArrayList<>();
     }
 
    public void saveJobs(String filename) throws IOException, NullPointerException {
@@ -57,8 +56,9 @@ public class JobList implements Savable, Loadable {
     // EFFECTS: creates a new job and add to job list.
     public void addJob(String jobType, String jobTitle, String company) throws InvalidEntryException {
         Job job;
+        String coopTerm;
         if (jobType.equalsIgnoreCase("1")){
-            job = new CoopJob(jobTitle, company);
+            job = new CoopJob(jobTitle, company); //TODO
 
             do {
                 retryEntry = false;
@@ -67,14 +67,11 @@ public class JobList implements Savable, Loadable {
                         "2) 8 months\n" +
                         "3) 1 year.");
                 try {
-                    coopTerm = Integer.parseInt(scanner.nextLine());
-                    job.InvalidChoice(coopTerm);
-                    ((CoopJob) job).setCoopDuration(coopTerm);
-                } catch (InvalidChoiceException e) {
-                    System.out.println("Invalid choice.");
-                    retryEntry = true;
+                    coopTerm = scanner.nextLine();
+                    job.setCoopDuration(coopTerm);
                 } catch (NumberFormatException e) {
                     System.out.println("Not a number.");
+                    retryEntry = true;
                 } finally {
                     System.out.println("Try again:");
                 }
@@ -83,7 +80,7 @@ public class JobList implements Savable, Loadable {
 
 
         } else {
-            job = new FulltimeJob(jobTitle, company);
+            job = new FulltimeJob(jobTitle, company); //TODO
         }
         jobs.add(job);
         job.printApplied();

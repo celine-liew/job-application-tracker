@@ -1,7 +1,6 @@
 package main.ui;
 
 import Exceptions.Invalid2ChoiceException;
-import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 import Exceptions.InvalidStringException;
 import model.Job;
@@ -14,7 +13,6 @@ import java.util.Scanner;
 public class Main {
 
     // arrayList storing job objects
-    // arrayList storing edit history
     JobList jl;
     Scanner scanner = new Scanner(System.in);
     protected String filename = "";
@@ -23,7 +21,7 @@ public class Main {
     boolean retryEntry;
     Loadable load;
 
-    public Main() throws Exception  {
+    public Main() throws IOException, InvalidEntryException  {
 
         String input;
         String jobType = "";

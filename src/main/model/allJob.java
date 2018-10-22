@@ -1,5 +1,6 @@
 package model;
 
+import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 
 import java.time.LocalDate;
@@ -20,8 +21,10 @@ public class allJob extends Job {
         this.coopDuration = coopDuration;
     }
 
+    @Override
     public void printApplied(){
              System.out.println("All jobs loaded!!!!");
 
     }
+
 }

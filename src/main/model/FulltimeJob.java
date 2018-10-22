@@ -1,5 +1,6 @@
 package model;
 
+import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 
 public class FulltimeJob extends Job {

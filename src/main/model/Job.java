@@ -33,15 +33,6 @@ public abstract class Job implements JobInterface  {
             this.coopDuration = "n/a";
     }
 
-//    public Job(String jobType, String jobTitle, String company, String date, String jobStatus, String dateLastChanged){
-//        this.jobType = jobType;
-//        this.jobTitle = jobTitle;
-//        this.company = company;
-//        this.dateApplied = LocalDate.now(); //used Java's function.
-//        this.jobStatus = jobStatus;  //hardcoding it currently.
-//        this.dateLastChanged = LocalDate.now();
-//    }
-
     abstract void printApplied();
 
     public String getJobType() {
@@ -103,7 +94,6 @@ public abstract class Job implements JobInterface  {
 
     public String getCoopDuration () {return coopDuration;}
 
-
-    public void InvalidChoice(int choice) throws InvalidChoiceException {}
+    public void InvalidChoice(int choice) throws InvalidChoiceException, NumberFormatException{}
 
 }

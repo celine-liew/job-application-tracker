@@ -1,5 +1,6 @@
 package Interfaces;
 
+import Exceptions.InvalidEntryException;
 import model.Job;
 
 import java.io.IOException;
@@ -7,9 +8,9 @@ import java.util.List;
 
 public interface JoblistInterface {
 
-    public void saveJobs() throws IOException;
+    public void saveJobs(String filename) throws IOException;
 
-    public void addJob(String jobTitle, String company);
+    public void addJob(String jobType, String jobTitle, String company) throws InvalidEntryException;
 
     public Job getJob(int i);
 
