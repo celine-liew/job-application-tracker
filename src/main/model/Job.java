@@ -18,12 +18,13 @@ public abstract class Job implements JobInterface  {
     protected LocalDate dateLastChanged;
     public final String APPLIED = "Applied";
     protected String coopDuration;
+    protected int jobID;
 
     // REQUIRES: jobTitle and company to be valid
     // MODIFIES: this
     // EFFECTS: creates new job object initialising private fields
-    public Job(String jobTitle, String company) throws InvalidEntryException {
-
+    public Job(int jobID, String jobTitle, String company) throws InvalidEntryException {
+            this.jobID = jobID;
             this.jobType = "";
             this.jobTitle = jobTitle;
             this.company = company;
@@ -34,6 +35,10 @@ public abstract class Job implements JobInterface  {
     }
 
     abstract void printApplied();
+
+    public String getJobID() {
+        return Integer.toString(this.jobID);
+    }
 
     public String getJobType() {
             return this.jobType;

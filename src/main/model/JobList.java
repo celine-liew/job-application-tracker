@@ -1,6 +1,5 @@
 package model;
 
-import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 import Interfaces.JoblistInterface;
 import Interfaces.Loadable;
@@ -10,20 +9,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class JobList implements Savable, Loadable, JoblistInterface {
 
-    protected List<Job> jobs;
+    protected HashMap<Integer,Job> jobs = new HashMap<>();
+    //protected HashMap<String, Job> jobs;
     PrintWriter writer;
     private List<String> lines;
     private List<List> parsedLines = new ArrayList<>();
-    private allJob restorejob;
+    private Job restorejob;
     Scanner scanner = new Scanner(System.in);
-        boolean retryEntry;
+    boolean retryEntry;
+    int maxID;
+    int jobID; //NEEDS TO BE IN THE WRITE FILE.
+
 
 
     public JobList(String filename) throws IOException {
@@ -31,24 +31,28 @@ public class JobList implements Savable, Loadable, JoblistInterface {
     }
 
     public JobList(List<List> jobLists) throws InvalidEntryException {
-        jobs = new ArrayList<>();
+        //jobs = new HashMap<>();
         for (List<String> l : jobLists) {
-            restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4),l.get(5), l.get(6));
+            restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4),l.get(5), l.get(6),l.get(7));
         }
         restorejob.printApplied();
     }
 
-    public JobList() {
-        jobs = new ArrayList<>();
-    }
+//  public JobList() {
+////        jobs = new ArrayList<>();
+////    }
+      public JobList() {  jobs = new HashMap<>();  }
 
    public void saveJobs(String filename) throws IOException, NullPointerException {
         Save(filename);
     }
 
-    public void restoreJob(String jobType, String jobTitle, String company, String dateApplied, String jobStatus, String dateLastChanged,String coopDuration) throws InvalidEntryException {
-        restorejob = new allJob(jobType,jobTitle, company, dateApplied, jobStatus, dateLastChanged, coopDuration);
-        jobs.add(restorejob);
+    public void restoreJob(String jobID, String jobType, String jobTitle, String company, String dateApplied, String jobStatus, String dateLastChanged,String coopDuration) throws InvalidEntryException {
+        restorejob = new allJob(jobID, jobType,jobTitle, company, dateApplied, jobStatus, dateLastChanged, coopDuration);
+        int jobInt = Integer.parseInt(jobID);
+        jobs.put(jobInt,restorejob);
+        if (jobInt > maxID)
+            maxID = jobInt;
     }
 
     // REQUIRES: jobTitle, company
@@ -58,7 +62,9 @@ public class JobList implements Savable, Loadable, JoblistInterface {
         Job job;
         String coopTerm;
         if (jobType.equalsIgnoreCase("1")){
-            job = new CoopJob(jobTitle, company); //TODO
+            jobID = maxID + 1;
+            maxID++;
+            job = new CoopJob(jobID, jobTitle, company); //TODO
 
             do {
                 retryEntry = false;
@@ -80,9 +86,11 @@ public class JobList implements Savable, Loadable, JoblistInterface {
 
 
         } else {
-            job = new FulltimeJob(jobTitle, company); //TODO
+            jobID = maxID + 1;
+            maxID++;
+            job = new FulltimeJob(jobID, jobTitle, company); //TODO
         }
-        jobs.add(job);
+        jobs.put(jobID,job);
         job.printApplied();
     }
 
@@ -100,7 +108,11 @@ public class JobList implements Savable, Loadable, JoblistInterface {
 
     //EFFECT: return job list
     public List<Job> getJobList() {
-        return jobs;
+        List<Job> jobsPrint = new ArrayList<>();
+        for (Map.Entry<Integer, Job> entry : jobs.entrySet()){
+            jobsPrint.add(entry.getValue());
+        }
+        return jobsPrint;
     }
 
 
@@ -115,7 +127,11 @@ public class JobList implements Savable, Loadable, JoblistInterface {
 
     public void Save(String filename) throws IOException {
         writer = new PrintWriter(filename, "UTF-8");
-        writeFile(jobs);
+        List<Job> jobsSave= new ArrayList<>();
+        for (Map.Entry<Integer, Job> entry : jobs.entrySet()){
+            jobsSave.add(entry.getValue());
+        }
+        writeFile((List<Job>) jobsSave);
     }
 
     public void writeFile(List<Job> jobs){
@@ -148,24 +164,25 @@ public class JobList implements Savable, Loadable, JoblistInterface {
         return String.valueOf(writer.append(","));
     }
 
-    public void loadFile(String filename) throws NullPointerException {
+    public void loadFile(String filename) {
         try {
             lines = Files.readAllLines(Paths.get(filename));
         } catch (IOException e) {
             System.out.println("invalid file name");
         } catch (NullPointerException e) {
-            System.out.println("file not found");
+            System.out.println("no file to load");
         }
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnComma(line);
             parsedLines.add(partsOfLine);
-            System.out.print("jobType: " + partsOfLine.get(0) + " ");
-            System.out.print("jobTitle: " + partsOfLine.get(1) + " ");
-            System.out.print("company: " + partsOfLine.get(2) + " ");
-            System.out.print("dateApplied: " + partsOfLine.get(3) + " ");
-            System.out.print("jobStatus: " + partsOfLine.get(4) + " ");
-            System.out.println("dateLastChanged: " + partsOfLine.get(5));
-            System.out.println("coopDuration: " + partsOfLine.get(6));
+            System.out.println("jobID: " + partsOfLine.get(0) + " ");
+            System.out.print("jobType: " + partsOfLine.get(1) + " ");
+            System.out.print("jobTitle: " + partsOfLine.get(2) + " ");
+            System.out.print("company: " + partsOfLine.get(3) + " ");
+            System.out.print("dateApplied: " + partsOfLine.get(4) + " ");
+            System.out.print("jobStatus: " + partsOfLine.get(5) + " ");
+            System.out.println("dateLastChanged: " + partsOfLine.get(6));
+            System.out.println("coopDuration: " + partsOfLine.get(7));
         }
     }
 

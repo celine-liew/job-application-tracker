@@ -7,9 +7,10 @@ import model.Job;
 import model.JobList;
 import Interfaces.Loadable;
 
+import javax.lang.model.element.Element;
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 public class Main {
 
     // arrayList storing job objects
@@ -20,6 +21,7 @@ public class Main {
     String inputCompany;
     boolean retryEntry;
     Loadable load;
+    Job job;
 
     public Main() throws IOException, InvalidEntryException  {
 
@@ -31,8 +33,8 @@ public class Main {
             filename = scanner.nextLine();
             try {
                 load = new JobList(filename);
-            } catch (Exception e) {
-                System.out.println("filename not found.");
+           } catch (NullPointerException e) {
+                System.out.println("No file to load.");
                 retryEntry = true;
             } finally {
                 System.out.println("Enter valid file! Try again.");
@@ -40,7 +42,7 @@ public class Main {
         }
             while (retryEntry);
             //load.loadFile();
-            jl = new JobList(load.getParsedLines());
+            JobList jl = new JobList(load.getParsedLines());
 
         while (true) {
             System.out.println();
@@ -70,19 +72,17 @@ public class Main {
                     } catch (NumberFormatException e) {
                         System.out.println(e.getMessage() + " Try again");
                         retryEntry = true;
-                    } finally {
-                        System.out.println("choose coop or full time");
                     }
                 } while (retryEntry);
                 enterJob();
                 jl.addJob(jobType, inputJobTitle, inputCompany);
                 System.out.println();
-                printJobs();
+                printJobs(jl);
                 System.out.println();
             } else if (input.equals("2")) {
                 System.out.println("you selected: " + input + " - Update job application status.");
                 System.out.println();
-                printJobs();
+                printJobs(jl);
                 System.out.println();
                 if (!jl.jobLisEmpty()) {
                     statusUpdate();
@@ -90,7 +90,7 @@ public class Main {
             } else if (input.equals("3")) {
                 System.out.println("you selected: " + input + " - Show jobs list.");
                 System.out.println();
-                printJobs();
+                printJobs(jl);
                 System.out.println();
             } else if (input.equals("4")) {
                 jl.saveJobs(filename);
@@ -103,19 +103,30 @@ public class Main {
 
     // REQUIRES: the job list must not be empty
     // EFFECTS: prints the jobs list
-    public void printJobs(){
+    public void printJobs(JobList jl){
+//        System.out.println(jl);
+        //Collection<Job> jobs = jl.getJobList();
+        //int idx = 0;
         List<Job> jobs = jl.getJobList();
-        int idx = 0;
         if (jobs.size() > 0) {
             for (Job job : jl.getJobList()) {
-                System.out.println(idx + " " +
-                        "" + job.getJobType() + " "
+                System.out.println("jobID:" + job.getJobID() +
+                        " " + job.getJobType() + " "
                         + job.getJobTitle() + " " + job.getCompany()
                         + " Applied: " + job.getDateApplied()
                         + " Status: " + job.getJobStatus()
                         + " CoopDuration: " + job.getCoopDuration());
-                idx++;
-            }
+           }
+
+//            for (Job job: jobs) {
+//                System.out.println(job +
+//                        "" + job.getJobType() + " "
+//                        + job.getJobTitle() + " " + job.getCompany()
+//                        + " Applied: " + job.getDateApplied()
+//                        + " Status: " + job.getJobStatus()
+//                        + " CoopDuration: " + job.getCoopDuration());
+//                //idx++;
+//            }
         } else {
             System.out.println("No jobs applied.");
         }
@@ -125,7 +136,7 @@ public class Main {
     // EFFECTS: updates the job status of the job entry
     public void statusUpdate(){
         int inputEdit;
-        List<Job> jobs = jl.getJobList();
+        Collection<Job> jobs = jl.getJobList();
         System.out.println("Select job # to edit.");
         inputEdit = Integer.parseInt(scanner.nextLine());
         while (jl.invalidJoblistRange(inputEdit)) {

@@ -4,6 +4,8 @@ import Exceptions.InvalidEntryException;
 import model.Job;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 public interface JoblistInterface {
@@ -16,7 +18,7 @@ public interface JoblistInterface {
 
     public boolean jobLisEmpty();
 
-    public List<Job> getJobList();
+    public Collection<Job> getJobList();
 
     public boolean invalidJoblistRange(int i);
 }

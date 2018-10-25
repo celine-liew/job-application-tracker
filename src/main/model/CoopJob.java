@@ -9,8 +9,8 @@ public class CoopJob extends Job {
     private String coopDuration;
 
     //EFFECTS: Create a new coop job, with coop-term length
-    public CoopJob(String jobTitle, String company) throws InvalidEntryException {
-        super(jobTitle, company);
+    public CoopJob(int jobID, String jobTitle, String company) throws InvalidEntryException {
+        super(jobID, jobTitle, company);
 
         this.jobType = CO_OP;
         coopDuration = "";

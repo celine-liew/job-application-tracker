@@ -1,6 +1,6 @@
 package Exceptions;
 
-public class InvalidChoiceException extends InvalidEntryException {
+public class InvalidChoiceException extends Exception {
 
     public InvalidChoiceException(){}
 }

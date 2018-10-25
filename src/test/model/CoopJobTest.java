@@ -15,7 +15,7 @@ class CoopJobTest {
 
     @BeforeEach
     void setUp() throws InvalidEntryException  {
-        j = new CoopJob( "testjob", "testcompany");
+        j = new CoopJob( 1,"testjob", "testcompany");
 
     }
 

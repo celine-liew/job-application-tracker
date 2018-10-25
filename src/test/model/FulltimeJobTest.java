@@ -14,7 +14,7 @@ class FulltimeJobTest {
 
     @BeforeEach
     void setUp() throws InvalidEntryException {
-        j = new FulltimeJob("testjob", "testcompany");
+        j = new FulltimeJob(1, "testjob", "testcompany");
 
     }
 
