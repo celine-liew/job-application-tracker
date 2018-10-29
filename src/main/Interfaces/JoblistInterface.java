@@ -21,4 +21,8 @@ public interface JoblistInterface {
     public Collection<Job> getJobList();
 
     public boolean invalidJoblistRange(int i);
+
+    public void removeJob(int i);
+
+    public void removeJob(Job job);
 }
