@@ -1,0 +1,5 @@
+P8 - Associations and Data Relationships
+
+- Added CompanyList to create reflexive relationship with Job.
+- CompanyList is hashmap of <company, job>
+- Ability to print jobs by companies
