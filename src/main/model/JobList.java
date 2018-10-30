@@ -157,6 +157,8 @@ public class JobList implements Savable, Loadable, JoblistInterface {
         //parsed info
         try {
             for (Job job : jobs) {
+                writer.append(job.getJobID());
+                addComa();
                 writer.append(String.valueOf(job.getJobType()));
                 addComa();
                 writer.append(String.valueOf(job.getJobTitle()));

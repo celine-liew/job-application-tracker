@@ -1,6 +1,7 @@
 package interfaceTest;
 
 import Exceptions.InvalidEntryException;
+import model.CompanyList;
 import model.Job;
 import model.JobList;
 //import model.Load;
@@ -19,12 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class LoadableTest {
 
     public String filename;
-    Loadable load;
+    Loadable testload;
     JobList j1;
+    CompanyList companyList;
 
     @BeforeEach
     void setUp() throws Exception {
         filename = "testFile.csv";
+        companyList = new CompanyList();
         //load = new JobList(filename);
 
     }
@@ -32,16 +35,13 @@ class LoadableTest {
     @Test
     void testLoadFilenoException() {
         try {
-            load = new JobList(filename);
-            j1 = new JobList(load.getParsedLines());
-            Job j = j1.getJob(0);
-            assertEquals(j.getCompany(), "companytest");
-        } catch (NullPointerException e) {
-            fail("NullPointerException thrown when not supposed to.");
-        } catch (InvalidEntryException e) {
-            fail("InvalidEntryException thrown when not supposed to.");
-        } catch (IOException e) {
-            fail("IOException thrown when not supposed to.");
+            testload = new JobList(companyList, filename);
+            testload.loadFile(filename);
+            j1 = new JobList(companyList, testload.getParsedLines());
+            Job j = j1.getJob(1);
+            assertEquals(j.getCompany(), "company");
+        } catch (Exception e) {
+            fail("Exception thrown when shouldn't");
         }
     }
 
@@ -50,8 +50,8 @@ class LoadableTest {
     void testLoadFileException() {
         try {
             filename = "input";
-            load = new JobList(filename);
-            j1 = new JobList(load.getParsedLines());
+            testload = new JobList(companyList, filename);
+            j1 = new JobList(companyList, testload.getParsedLines());
             Job j = j1.getJob(0);
             assertEquals(j.getCompany(), "companytest");
             fail("no Exception thrown when supposed to.");
@@ -67,12 +67,12 @@ class LoadableTest {
     @Test
     void testGetParsedLinesNoException() {
         try {
-            load = new JobList(filename);
-            List toload = load.getParsedLines();
-            JobList j1 = new JobList(toload);
-            Job j = j1.getJob(0);
-            assertEquals(j.getJobTitle(), "intern");
-            assertEquals(j.getCompany(), "companytest");
+            testload = new JobList(companyList, filename);
+            List toload = testload.getParsedLines();
+            JobList j1 = new JobList(companyList, toload);
+            Job j = j1.getJob(1);
+            assertEquals(j.getJobTitle(), "job1");
+            assertEquals(j.getCompany(), "company");
         } catch (InvalidEntryException e) {
             fail("InvalidEntryException thrown when not supposed to.");
         } catch (IOException e) {
@@ -84,7 +84,7 @@ class LoadableTest {
     @Test
     void testSplitOnCommaNoException() {
         try {
-            load = new JobList(filename);
+            testload = new JobList(companyList, filename);
             List<String> lines = Files.readAllLines(Paths.get(filename));
             List<List>
 
@@ -92,11 +92,11 @@ class LoadableTest {
             String s = "";
 
             for (String line : lines) {
-                ArrayList<String> partsOfLine = load.splitOnComma(line);
+                ArrayList<String> partsOfLine = testload.splitOnComma(line);
                 parsedLines.add(partsOfLine);
-                s = "jobTitle: " + partsOfLine.get(1) + " ";
+                s = "jobTitle: " + partsOfLine.get(2) + " ";
             }
-            assertEquals(s, "jobTitle: intern ");
+            assertEquals(s, "jobTitle: job1 ");
         } catch (IOException e) {
             fail("IOException thrown when not supposed to.");
         } catch (NullPointerException e) {

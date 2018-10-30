@@ -253,6 +253,8 @@ public class Main {
             try {
                 int delete = Integer.parseInt(scanner.nextLine());
                 jl.removeJob(delete);
+                System.out.println("job removed! Updated joblist:\n");
+                printJobs(jl);
             } catch (NumberFormatException e) {
                 System.out.println("invalid input. Try again.");
                 retryEntry = true;

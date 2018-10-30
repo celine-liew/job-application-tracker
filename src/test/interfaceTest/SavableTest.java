@@ -19,10 +19,12 @@ class SavableTest {
     //Savable save;
     JobList jobs;
     JobList j1;
+    private CompanyList companyList;
 
     @BeforeEach
     void setUp() throws IOException, InvalidEntryException  {
-        jobs = new JobList();
+        companyList = new CompanyList();
+        jobs = new JobList(companyList, filename);
         //save = new Save(filename);
         jobs.loadFile(filename);
     }
@@ -35,9 +37,9 @@ class SavableTest {
             jobs.addJob("2", "job1", "company");
             jobs.saveJobs(filename);
             //(jobs.getJobList());
-            Loadable testload = new JobList(filename);
+            Loadable testload = new JobList(companyList, filename);
             testload.loadFile(filename);
-            j1 = new JobList(testload.getParsedLines());
+            j1 = new JobList(companyList, testload.getParsedLines());
             Job j = j1.getJob(1);
             assertEquals(j.getCompany(), "company");
         } catch (Exception e) {

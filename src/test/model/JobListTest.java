@@ -15,10 +15,12 @@ class JobListTest {
     //private List<String> lines;
     //private List<List> parsedLines = new ArrayList<>();
     //private String fileName;
+    private CompanyList companyList;
 
     @BeforeEach
     void setUp() {
-        jobs = new JobList();
+        companyList = new CompanyList();
+        jobs = new JobList(companyList);
     }
 
     //Test loading of joblist with right system printed
