@@ -2,14 +2,13 @@ package model;
 
 import Exceptions.InvalidEntryException;
 import Interfaces.JoblistInterface;
+import Interfaces.OrgListInterface;
 
 import java.io.IOException;
 import java.util.*;
 
-public class CompanyList implements JoblistInterface {
+public class CompanyList implements OrgListInterface {
     Map<String, ArrayList<Job>> jobsbyco;
-    String company;
-    JobList jobList;
 
     public CompanyList() {
         jobsbyco = new HashMap<>();
@@ -24,7 +23,7 @@ public class CompanyList implements JoblistInterface {
                 jobsbyco.get(job.getCompany()).add(job);
             }
         }
-        job.addListBelongs(this);
+        job.addListBelongs(this); //thus JobListInterface (Interface needs to be refactored)
     }
 
     public void removeJob(Job job) {
@@ -37,7 +36,7 @@ public class CompanyList implements JoblistInterface {
         }
     }
 
-    public Map<String, List<String>> returnJobsbyCo(){
+    public Map<String, List<String>> returnJobsbyType(){
         //List<Job> jobsPrint = new ArrayList<>();
         Map<String, List<String>> jobsPrint = new HashMap<>();
 
@@ -51,39 +50,5 @@ public class CompanyList implements JoblistInterface {
         return jobsPrint;
     }
 
-    @Override
-    public void saveJobs(String filename) throws IOException {
-
-    }
-
-    @Override
-    public void addJob(String jobType, String jobTitle, String company) throws InvalidEntryException {
-
-    }
-
-    @Override
-    public Job getJob(int i) {
-        return null;
-    }
-
-    @Override
-    public boolean jobLisEmpty() {
-        return false;
-    }
-
-    @Override
-    public Collection<Job> getJobList() {
-        return null;
-    }
-
-    @Override
-    public boolean invalidJoblistRange(int i) {
-        return false;
-    }
-
-    @Override
-    public void removeJob(int i) {
-
-    }
 }
 

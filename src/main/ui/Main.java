@@ -4,9 +4,7 @@ import Exceptions.Invalid2ChoiceException;
 import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 import Exceptions.InvalidStringException;
-import model.CompanyList;
-import model.Job;
-import model.JobList;
+import model.*;
 import Interfaces.Loadable;
 
 import java.io.IOException;
@@ -33,16 +31,17 @@ public class Main {
             retryEntry = false;
             System.out.println("input filename to load");
             filename = scanner.nextLine();
+            Loadable load = new Load(filename);
             try {
-                load = new JobList(companyList, filename);
+                load.loadFile();
+                jl = new JobList(companyList, load.getParsedLines());
+                //load = new JobList(companyList, filename);
             } catch (NullPointerException e) {
                 System.out.println("No file to load.");
                 retryEntry = true;
             }
         }
         while (retryEntry);
-        //load.loadFile();
-        jl = new JobList(companyList, load.getParsedLines());
 
         while (true) {
             mainMenu();
@@ -70,7 +69,7 @@ public class Main {
                     }
                 } while (retryEntry);
                 enterJob();
-                jl.addJob(jobType, inputJobTitle, inputCompany);
+                addJob(jobType, inputJobTitle, inputCompany);
                 System.out.println();
                 printJobs(jl);
                 System.out.println();
@@ -153,7 +152,7 @@ public class Main {
     }
 
     public void printByCompany() {
-        Map<String, List<String>> jobsPrint = companyList.returnJobsbyCo();
+        Map<String, List<String>> jobsPrint = companyList.returnJobsbyType();
 
         for (Map.Entry<String, List<String>> entry : jobsPrint.entrySet()) {
             System.out.println(entry.getKey());
@@ -209,31 +208,31 @@ public class Main {
 
     }
 
-    public void stringBlank(String checkblank) throws InvalidStringException {
-        if (checkblank.trim().length() == 0) {
-            throw new InvalidStringException();
+    public void addJob(String jobType, String jobTitle, String company) throws InvalidEntryException {
+        String coopTerm;
+        if (jobType.equalsIgnoreCase("1")) {
+
+            do {
+                retryEntry = false;
+                System.out.println("Select coop duration:\n" +
+                        "1) 4 months\n" +
+                        "2) 8 months\n" +
+                        "3) 1 year.");
+                try {
+                    coopTerm = scanner.nextLine();
+                    jl.addJob(jobType, jobTitle, company, coopTerm);
+                } catch (NumberFormatException e) {
+                    System.out.println("Not a number.");
+                    retryEntry = true;
+                }
+
+            } while (retryEntry);
+
+
+        } else {
+            jl.addJob(jobType, jobTitle, company, "N/A");
         }
     }
-
-    public void invalid2choice(int inter) throws Invalid2ChoiceException, NumberFormatException {
-        if (inter == 0 || inter > 2) {
-            throw new Invalid2ChoiceException();
-        }
-        return;
-    }
-
-    public void invalid3choice(int inter) throws InvalidChoiceException, NumberFormatException {
-        if (inter == 0 || inter > 3) {
-            throw new InvalidChoiceException();
-        }
-        return;
-    }
-
-
-    public static void main(String[] args) throws Exception {
-        new Main();
-    }
-
 
     public void mainMenu() {
         System.out.println();
@@ -264,7 +263,33 @@ public class Main {
             }
         } while (retryEntry);
 
-        //TODO company list
     }
+
+    public void stringBlank(String checkblank) throws InvalidStringException {
+        if (checkblank.trim().length() == 0) {
+            throw new InvalidStringException();
+        }
+    }
+
+    public void invalid2choice(int inter) throws Invalid2ChoiceException, NumberFormatException {
+        if (inter == 0 || inter > 2) {
+            throw new Invalid2ChoiceException();
+        }
+        return;
+    }
+
+    public void invalid3choice(int inter) throws InvalidChoiceException, NumberFormatException {
+        if (inter == 0 || inter > 3) {
+            throw new InvalidChoiceException();
+        }
+        return;
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        new Main();
+    }
+
+
 }
 

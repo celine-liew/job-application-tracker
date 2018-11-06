@@ -23,10 +23,14 @@ class SavableTest {
 
     @BeforeEach
     void setUp() throws IOException, InvalidEntryException  {
+        Loadable load = new Load(filename);
         companyList = new CompanyList();
-        jobs = new JobList(companyList, filename);
+
+        load.loadFile();
+        jobs = new JobList(companyList, load.getParsedLines());
+
         //save = new Save(filename);
-        jobs.loadFile(filename);
+
     }
 
     @Test
@@ -34,11 +38,12 @@ class SavableTest {
 //        Job coopJob = new CoopJob("intern","company");
 //        ((CoopJob) coopJob).setCoopDuration("1 year");
         try {
-            jobs.addJob("2", "job1", "company");
+            jobs.addJob("2", "job1", "company", "n/a");
             jobs.saveJobs(filename);
             //(jobs.getJobList());
-            Loadable testload = new JobList(companyList, filename);
-            testload.loadFile(filename);
+
+            Loadable testload = new Load(filename);
+            testload.loadFile();
             j1 = new JobList(companyList, testload.getParsedLines());
             Job j = j1.getJob(1);
             assertEquals(j.getCompany(), "company");

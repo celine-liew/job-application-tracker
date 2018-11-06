@@ -4,6 +4,7 @@ import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 import Interfaces.JobInterface;
 import Interfaces.JoblistInterface;
+import Interfaces.OrgListInterface;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,7 +25,7 @@ public abstract class Job implements JobInterface {
     public final String APPLIED = "Applied";
     protected String coopDuration;
     protected int jobID;
-    private List<JoblistInterface> listBelongs = new ArrayList<>();
+    private List<OrgListInterface> listBelongs = new ArrayList<>();
 
 
     // REQUIRES: jobTitle and company to be valid
@@ -114,12 +115,12 @@ public abstract class Job implements JobInterface {
     public void InvalidChoice(int choice) throws InvalidChoiceException, NumberFormatException {
     }
 
-    public void addListBelongs(JoblistInterface list){
+    public void addListBelongs(OrgListInterface list){
         listBelongs.add(list);
     }
 
     public void removeListBelongs(){
-        for (JoblistInterface jli : this.listBelongs){
+        for (OrgListInterface jli : this.listBelongs){
             jli.removeJob(this);
         }
 

@@ -6,6 +6,7 @@ import model.Job;
 import model.JobList;
 //import model.Load;
 import Interfaces.Loadable;
+import model.Load;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +36,8 @@ class LoadableTest {
     @Test
     void testLoadFilenoException() {
         try {
-            testload = new JobList(companyList, filename);
-            testload.loadFile(filename);
+            testload = new Load(filename);
+            testload.loadFile();
             j1 = new JobList(companyList, testload.getParsedLines());
             Job j = j1.getJob(1);
             assertEquals(j.getCompany(), "company");
@@ -50,7 +51,8 @@ class LoadableTest {
     void testLoadFileException() {
         try {
             filename = "input";
-            testload = new JobList(companyList, filename);
+            testload = new Load(filename);
+            testload.loadFile();
             j1 = new JobList(companyList, testload.getParsedLines());
             Job j = j1.getJob(0);
             assertEquals(j.getCompany(), "companytest");
@@ -67,7 +69,8 @@ class LoadableTest {
     @Test
     void testGetParsedLinesNoException() {
         try {
-            testload = new JobList(companyList, filename);
+            testload = new Load(filename);
+            testload.loadFile();
             List toload = testload.getParsedLines();
             JobList j1 = new JobList(companyList, toload);
             Job j = j1.getJob(1);
@@ -84,7 +87,8 @@ class LoadableTest {
     @Test
     void testSplitOnCommaNoException() {
         try {
-            testload = new JobList(companyList, filename);
+            testload = new Load(filename);
+            testload.loadFile();
             List<String> lines = Files.readAllLines(Paths.get(filename));
             List<List>
 
