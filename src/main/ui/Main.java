@@ -15,17 +15,17 @@ public class Main {
     // arrayList storing job objects
     JobList jl;
     Scanner scanner = new Scanner(System.in);
-    protected String filename = "";
+    protected String filename;
     String inputJobTitle;
     String inputCompany;
     boolean retryEntry;
-    Loadable load;
+    //Loadable load;
     Job job;
     CompanyList companyList;
 
     public Main() throws IOException, InvalidEntryException {
         companyList = new CompanyList();
-        String input = "";
+        String input;
         String jobType = "";
         do {
             retryEntry = false;
@@ -51,25 +51,9 @@ public class Main {
             // 2 - update job status
             // 3 - show job list
             if (input.equals("1")) {
-                do {
-                    retryEntry = false;
-                    System.out.println("you selected: " + input + " - Add new job.");
-                    System.out.println("Choose job type:\n" +
-                            "(1) Coop\n" +
-                            "(2) Full-time");
-                    try {
-                        jobType = scanner.nextLine();
-                        invalid2choice(Integer.parseInt(jobType));
-                    } catch (Invalid2ChoiceException e) {
-                        System.out.println("invalid choice. Try again.");
-                        retryEntry = true;
-                    } catch (NumberFormatException e) {
-                        System.out.println(e.getMessage() + " Try again");
-                        retryEntry = true;
-                    }
-                } while (retryEntry);
+                jobChoiceMenu(input);
                 enterJob();
-                addJob(jobType, inputJobTitle, inputCompany);
+                filterCoop(jobType, inputJobTitle, inputCompany);
                 System.out.println();
                 printJobs(jl);
                 System.out.println();
@@ -136,16 +120,6 @@ public class Main {
                         + " Status: " + job.getJobStatus()
                         + " CoopDuration: " + job.getCoopDuration());
             }
-
-//            for (Job job: jobs) {
-//                System.out.println(job +
-//                        "" + job.getJobType() + " "
-//                        + job.getJobTitle() + " " + job.getCompany()
-//                        + " Applied: " + job.getDateApplied()
-//                        + " Status: " + job.getJobStatus()
-//                        + " CoopDuration: " + job.getCoopDuration());
-//                //idx++;
-//            }
         } else {
             System.out.println("No jobs applied.");
         }
@@ -182,6 +156,26 @@ public class Main {
         System.out.println("Job Application Status Updated to: " + newStatus + "!\n");
     }
 
+    public void jobChoiceMenu(String input){
+        do {
+            retryEntry = false;
+            System.out.println("you selected: " + input + " - Add new job.");
+            System.out.println("Choose job type:\n" +
+                    "(1) Coop\n" +
+                    "(2) Full-time");
+            try {
+                String jobType = scanner.nextLine();
+                invalid2choice(Integer.parseInt(jobType));
+            } catch (Invalid2ChoiceException e) {
+                System.out.println("invalid choice. Try again.");
+                retryEntry = true;
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage() + " Try again");
+                retryEntry = true;
+            }
+        } while (retryEntry);
+    }
+
     public void enterJob() {
         System.out.println("Enter job title:");
         do {
@@ -208,7 +202,7 @@ public class Main {
 
     }
 
-    public void addJob(String jobType, String jobTitle, String company) throws InvalidEntryException {
+    public void filterCoop(String jobType, String jobTitle, String company) throws InvalidEntryException {
         String coopTerm;
         if (jobType.equalsIgnoreCase("1")) {
 
