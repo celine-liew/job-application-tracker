@@ -1,10 +1,6 @@
 package model;
 
-import Exceptions.InvalidEntryException;
-import Interfaces.JoblistInterface;
 import Interfaces.OrgListInterface;
-
-import java.io.IOException;
 import java.util.*;
 
 public class CompanyList implements OrgListInterface {
@@ -23,7 +19,7 @@ public class CompanyList implements OrgListInterface {
                 jobsbyco.get(job.getCompany()).add(job);
             }
         }
-        job.addListBelongs(this); //thus JobListInterface (Interface needs to be refactored)
+        job.addListBelongs(this); //
     }
 
     public void removeJob(Job job) {

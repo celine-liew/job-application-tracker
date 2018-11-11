@@ -3,17 +3,29 @@ package model;
 import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class CoopJob extends Job {
 
-    public final String CO_OP = "Coop";
     private String coopDuration;
 
     //EFFECTS: Create a new coop job, with coop-term length
     public CoopJob(int jobID, String jobTitle, String company) throws InvalidEntryException {
         super(jobID, jobTitle, company);
-
         this.jobType = CO_OP;
         coopDuration = "";
+    }
+
+    public CoopJob(String jobID, String jobType, String jobTitle, String company,
+                   String dateApplied, String jobStatus, String dateLastChanged, String coopDuration) throws InvalidEntryException {
+        super(Integer.parseInt(jobID), jobTitle, company);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd uuuu");
+        this.dateApplied = LocalDate.parse(dateApplied, formatter); //used Java's function.
+        this.dateLastChanged = LocalDate.parse(dateLastChanged, formatter);
+        this.jobStatus = jobStatus;
+        this.jobType = jobType;
+        this.coopDuration = coopDuration;
     }
 
     public void printApplied(){

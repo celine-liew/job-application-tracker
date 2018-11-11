@@ -3,7 +3,6 @@ package model;
 import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 import Interfaces.JobInterface;
-import Interfaces.JoblistInterface;
 import Interfaces.OrgListInterface;
 
 import java.time.LocalDate;
@@ -26,6 +25,9 @@ public abstract class Job implements JobInterface {
     protected String coopDuration;
     protected int jobID;
     private List<OrgListInterface> listBelongs = new ArrayList<>();
+    protected final String FULL_TIME = "Full-time";
+    protected final String CO_OP = "Coop";
+    private String loaded;
 
 
     // REQUIRES: jobTitle and company to be valid
@@ -123,7 +125,6 @@ public abstract class Job implements JobInterface {
         for (OrgListInterface jli : this.listBelongs){
             jli.removeJob(this);
         }
-
     }
 
     @Override
@@ -141,5 +142,6 @@ public abstract class Job implements JobInterface {
     public int hashCode() {
         return Objects.hash(jobType, jobTitle, company, coopDuration);
     }
+
 
 }

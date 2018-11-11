@@ -11,17 +11,17 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
-
     // arrayList storing job objects
-    JobList jl;
+    private JobList jl;
     Scanner scanner = new Scanner(System.in);
     protected String filename;
-    String inputJobTitle;
-    String inputCompany;
+    private String inputJobTitle;
+    private String inputCompany;
     boolean retryEntry;
-    //Loadable load;
-    Job job;
-    CompanyList companyList;
+    private CompanyList companyList;
+    private String SELECTED = "you selected: ";
+    final String FULL_TIME = "Full-time";
+    final String CO_OP = "Coop";
 
     public Main() throws IOException, InvalidEntryException {
         companyList = new CompanyList();
@@ -35,7 +35,7 @@ public class Main {
             try {
                 load.loadFile();
                 jl = new JobList(companyList, load.getParsedLines());
-                //load = new JobList(companyList, filename);
+                System.out.println("all jobs loaded!");
             } catch (NullPointerException e) {
                 System.out.println("No file to load.");
                 retryEntry = true;
@@ -58,7 +58,7 @@ public class Main {
                 printJobs(jl);
                 System.out.println();
             } else if (input.equals("2")) {
-                System.out.println("you selected: " + input + " - Update job application status.");
+                System.out.println(SELECTED + input + " - Update job application status.");
                 System.out.println();
                 printJobs(jl);
                 System.out.println();
@@ -66,7 +66,7 @@ public class Main {
                     statusUpdate();
                 }
             } else if (input.equals("3")) {
-                System.out.println("you selected: " + input + " - Show jobs list.");
+                System.out.println(SELECTED+ input + " - Show jobs list.");
                 System.out.println();
                 printJobs(jl);
                 do {
@@ -84,8 +84,6 @@ public class Main {
                         }
                         if (input.equals("3")) {
                             removeJobMenu();
-
-
                         }
                     } catch (InvalidChoiceException e) {
                         System.out.println("invalid choice. Try again.");
@@ -99,8 +97,6 @@ public class Main {
                 jl.saveJobs(filename);
                 return;
             }
-            //get user input to choose which to edit
-            //edit object fields selected
         }
     }
 
@@ -136,11 +132,21 @@ public class Main {
         }
     }
 
+    public void mainMenu() {
+        System.out.println();
+        System.out.println("What would you like to do: " +
+                "\n(1) Add new Job application." +
+                "\n(2) Update job application status." +
+                "\n(3) Show jobs list." +
+                "\n(4) Delete job." +
+                "\n(5) Save and exit.");
+    }
+
     // MODIFIES: this
     // EFFECTS: updates the job status of the job entry
     public void statusUpdate() {
         int inputEdit;
-        Collection<Job> jobs = jl.getJobList();
+        //Collection<Job> jobs = jl.getJobList();
         System.out.println("Select job # to edit.");
         inputEdit = Integer.parseInt(scanner.nextLine());
         while (jl.invalidJoblistRange(inputEdit)) {
@@ -148,18 +154,16 @@ public class Main {
             System.out.println("Select job # to edit.");
             inputEdit = Integer.parseInt(scanner.nextLine());
         }
-        Job jobtoedit = jl.getJob(inputEdit);
         System.out.println("Enter new job status:");
         String newStatus = scanner.nextLine();
-        jobtoedit.setJobStatus(newStatus);
-        jobtoedit.setDateLastChanged();
+        jl.newStatusJob(inputEdit,newStatus);
         System.out.println("Job Application Status Updated to: " + newStatus + "!\n");
     }
 
     public void jobChoiceMenu(String input){
         do {
             retryEntry = false;
-            System.out.println("you selected: " + input + " - Add new job.");
+            System.out.println(SELECTED + input + " - Add new job.");
             System.out.println("Choose job type:\n" +
                     "(1) Coop\n" +
                     "(2) Full-time");
@@ -199,14 +203,13 @@ public class Main {
                 retryEntry = true;
             }
         } while (retryEntry);
-
     }
 
     public void filterCoop(String jobType, String jobTitle, String company) throws InvalidEntryException {
         String coopTerm;
         if (jobType.equalsIgnoreCase("1")) {
-
             do {
+                jobType = FULL_TIME;
                 retryEntry = false;
                 System.out.println("Select coop duration:\n" +
                         "1) 4 months\n" +
@@ -224,18 +227,9 @@ public class Main {
 
 
         } else {
-            jl.addJob(jobType, jobTitle, company, "N/A");
+            jobType = CO_OP;
+            jl.addJob(jobType, jobTitle, company, "n/a");
         }
-    }
-
-    public void mainMenu() {
-        System.out.println();
-        System.out.println("What would you like to do: " +
-                "\n(1) Add new Job application." +
-                "\n(2) Update job application status." +
-                "\n(3) Show jobs list." +
-                "\n(4) Delete job." +
-                "\n(5) Save and exit.");
     }
 
     public void removeJobMenu() {
@@ -246,7 +240,7 @@ public class Main {
             try {
                 int delete = Integer.parseInt(scanner.nextLine());
                 jl.removeJob(delete);
-                System.out.println("job removed! Updated joblist:\n");
+                System.out.println("job removed! Updated job list:\n");
                 printJobs(jl);
             } catch (NumberFormatException e) {
                 System.out.println("invalid input. Try again.");
@@ -256,7 +250,6 @@ public class Main {
                 retryEntry = true;
             }
         } while (retryEntry);
-
     }
 
     public void stringBlank(String checkblank) throws InvalidStringException {
@@ -283,7 +276,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         new Main();
     }
-
 
 }
 

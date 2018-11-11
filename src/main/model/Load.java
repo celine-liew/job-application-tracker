@@ -1,16 +1,15 @@
 package model;
 
+import Exceptions.InvalidEntryException;
 import Interfaces.Loadable;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Load implements Loadable {
-
+    
     private List<String> lines;
     private List<List> parsedLines = new ArrayList<>();
     private String fileName;
@@ -19,7 +18,7 @@ public class Load implements Loadable {
         this.fileName = fileName;
     }
 
-    public void loadFile() throws IOException {
+    public void loadFile() {
         try {
             lines = Files.readAllLines(Paths.get(this.fileName));
         } catch (IOException e) {
