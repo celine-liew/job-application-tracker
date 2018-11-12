@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +36,7 @@ public class ReadJobAPI {
             }
 
             JSONArray jArray = new JSONArray(sb.toString());
-            JSONObject jo = jArray.getJSONObject(0);
+            JSONObject jo = jArray.getJSONObject(randomInt());
             return storeData(jo);
 
         } finally {
@@ -63,5 +64,11 @@ public class ReadJobAPI {
         jobReco.put("location",jo.getString("location"));
         jobReco.put("url",splitURL(jo));
         return jobReco;
+    }
+
+    private int randomInt(){
+        Random random = new Random();
+        int randValue = random.nextInt(5);
+        return randValue;
     }
 }

@@ -259,12 +259,13 @@ public class Main {
     }
 
     public void parseData(Map jobReco) {
-        System.out.println("You may be interested in the following job: ");
+        System.out.println("You may be interested in the following job posted today: ");
         System.out.println("Job type: " + jobReco.get("type"));
         System.out.println("Title: " + jobReco.get("title"));
         System.out.println("Company: "+ jobReco.get("company"));
         System.out.println("Location: "+ jobReco.get("location"));
-        System.out.println("Apply link: " + jobReco.get("url"));
+        System.out.println("Apply link/email: " + jobReco.get("url"));
+        System.out.println();
     }
 
     public void stringBlank(String checkblank) throws InvalidStringException {
