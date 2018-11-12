@@ -6,6 +6,8 @@ import Exceptions.InvalidEntryException;
 import Exceptions.InvalidStringException;
 import model.*;
 import Interfaces.Loadable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -22,8 +24,12 @@ public class Main {
     private String SELECTED = "you selected: ";
     final String FULL_TIME = "Full-time";
     final String CO_OP = "Coop";
+    private ReadJobAPI readJobAPI;
+    private Map<String, String> jobReco;
 
-    public Main() throws IOException, InvalidEntryException {
+    public Main() throws IOException, InvalidEntryException, JSONException {
+        readJobAPI = new ReadJobAPI();
+        parseData(readJobAPI.retreveData());
         companyList = new CompanyList();
         String input;
         String jobType = "";
@@ -250,6 +256,15 @@ public class Main {
                 retryEntry = true;
             }
         } while (retryEntry);
+    }
+
+    public void parseData(Map jobReco) {
+        System.out.println("You may be interested in the following job: ");
+        System.out.println("Job type: " + jobReco.get("type"));
+        System.out.println("Title: " + jobReco.get("title"));
+        System.out.println("Company: "+ jobReco.get("company"));
+        System.out.println("Location: "+ jobReco.get("location"));
+        System.out.println("Apply link: " + jobReco.get("url"));
     }
 
     public void stringBlank(String checkblank) throws InvalidStringException {
