@@ -91,7 +91,7 @@ public class JobList extends Subject implements JoblistInterface  {
     @Override
     public void removeJob(int i) {
 //        emailServer.updateJob(REMOVED, jobs.get(i).jobType, jobs.get(i).jobTitle, jobs.get(i).company);
-        notifyEmailObserver(REMOVED, job);
+        notifyEmailObserver(REMOVED, job); //TODO
         jobs.get(i).removeListBelongs();
         jobs.remove(i);
     }
@@ -103,7 +103,7 @@ public class JobList extends Subject implements JoblistInterface  {
         if (jobType.equalsIgnoreCase("1")) {
             jobID = maxID + 1;
             maxID++;
-            job = new CoopJob(jobID, jobTitle, company); //TODO
+            job = new CoopJob(jobID, jobTitle, company);
             job.setCoopDuration(coopTerm);
         } else {
             jobID = maxID + 1;
@@ -113,7 +113,7 @@ public class JobList extends Subject implements JoblistInterface  {
         jobs.put(jobID, job);
         colist.addJob(job);
         job.printApplied();
-        notifyEmailObserver(ADDED, job);
+        notifyEmailObserver(ADDED, job); //TODO
     }
 
     public void newStatusJob(int i, String newStatus) {
@@ -121,7 +121,7 @@ public class JobList extends Subject implements JoblistInterface  {
         String OLD_STATUS = (jobs.get(i).getJobStatus());
         jobs.get(i).setJobStatus(newStatus);
         jobs.get(i).setDateLastChanged();
-        notifyEmailObserver(OLD_STATUS, newStatus, UPDATED, jobs.get(i));
+        notifyEmailObserver(OLD_STATUS, newStatus, UPDATED, jobs.get(i)); //TODO
     }
 
     }
