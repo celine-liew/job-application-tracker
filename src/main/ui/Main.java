@@ -1,18 +1,19 @@
-package main.ui;
+package ui;
 
 import Exceptions.Invalid2ChoiceException;
 import Exceptions.InvalidChoiceException;
 import Exceptions.InvalidEntryException;
 import Exceptions.InvalidStringException;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.*;
-import Interfaces.Loadable;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.*;
 
-public class Main {
+public class Main extends Application {
     // arrayList storing job objects
     private JobList jl;
     Scanner scanner = new Scanner(System.in);
@@ -27,84 +28,84 @@ public class Main {
     private ReadJobAPI readJobAPI;
     private Map<String, String> jobReco;
 
-    public Main() throws IOException, InvalidEntryException, JSONException {
-        readJobAPI = new ReadJobAPI();
-        parseData(readJobAPI.retreveData());
-        companyList = new CompanyList();
-        String input;
-        String jobType = "";
-        do {
-            retryEntry = false;
-            System.out.println("input filename to load");
-            filename = scanner.nextLine();
-            Loadable load = new Load(filename);
-            try {
-                load.loadFile();
-                jl = new JobList(companyList, load.getParsedLines());
-                System.out.println("all jobs loaded!");
-            } catch (NullPointerException e) {
-                System.out.println("No file to load.");
-                retryEntry = true;
-            }
-        }
-        while (retryEntry);
-
-        while (true) {
-            mainMenu();
-            input = scanner.nextLine();
-
-            // 1 - add new job -> choose job type.
-            // 2 - update job status
-            // 3 - show job list
-            if (input.equals("1")) {
-                jobChoiceMenu(input);
-                enterJob();
-                filterCoop(jobType, inputJobTitle, inputCompany);
-                System.out.println();
-                printJobs(jl);
-                System.out.println();
-            } else if (input.equals("2")) {
-                System.out.println(SELECTED + input + " - Update job application status.");
-                System.out.println();
-                printJobs(jl);
-                System.out.println();
-                if (!jl.jobLisEmpty()) {
-                    statusUpdate();
-                }
-            } else if (input.equals("3")) {
-                System.out.println(SELECTED+ input + " - Show jobs list.");
-                System.out.println();
-                printJobs(jl);
-                do {
-                    System.out.println("1) return to main menu\n" +
-                            "2) Show jobs by company\n" +
-                            "3) Remove Job.");
-                    try {
-                        input = scanner.nextLine();
-                        invalid3choice(Integer.parseInt(input));
-                        if (input.equals("1")) {
-                            mainMenu();
-                        }
-                        if (input.equals("2")) {
-                            printByCompany();
-                        }
-                        if (input.equals("3")) {
-                            removeJobMenu();
-                        }
-                    } catch (InvalidChoiceException e) {
-                        System.out.println("invalid choice. Try again.");
-                        retryEntry = true;
-                    }
-                    System.out.println();
-                } while (retryEntry);
-            } else if (input.equals("4")) {
-                removeJobMenu();
-            } else if (input.equals("5")) {
-                jl.saveJobs(filename);
-                return;
-            }
-        }
-    }
+//    public Main() throws IOException, InvalidEntryException, JSONException {
+//        readJobAPI = new ReadJobAPI();
+//        parseData(readJobAPI.retreveData());
+//        companyList = new CompanyList();
+//        String input;
+//        String jobType = "";
+//        do {
+//            retryEntry = false;
+//            System.out.println("input filename to load");
+//            filename = scanner.nextLine();
+//            Loadable load = new Load(filename);
+//            try {
+//                load.loadFile();
+//                jl = new JobList(companyList, load.getParsedLines());
+//                System.out.println("all jobs loaded!");
+//            } catch (NullPointerException e) {
+//                System.out.println("No file to load.");
+//                retryEntry = true;
+//            }
+//        }
+//        while (retryEntry);
+//
+//        while (true) {
+//            mainMenu();
+//            input = scanner.nextLine();
+//
+//            // 1 - add new job -> choose job type.
+//            // 2 - update job status
+//            // 3 - show job list
+//            if (input.equals("1")) {
+//                jobChoiceMenu(input);
+//                enterJob();
+//                filterCoop(jobType, inputJobTitle, inputCompany);
+//                System.out.println();
+//                printJobs(jl);
+//                System.out.println();
+//            } else if (input.equals("2")) {
+//                System.out.println(SELECTED + input + " - Update job application status.");
+//                System.out.println();
+//                printJobs(jl);
+//                System.out.println();
+//                if (!jl.jobLisEmpty()) {
+//                    statusUpdate();
+//                }
+//            } else if (input.equals("3")) {
+//                System.out.println(SELECTED+ input + " - Show jobs list.");
+//                System.out.println();
+//                printJobs(jl);
+//                do {
+//                    System.out.println("1) return to main menu\n" +
+//                            "2) Show jobs by company\n" +
+//                            "3) Remove Job.");
+//                    try {
+//                        input = scanner.nextLine();
+//                        invalid3choice(Integer.parseInt(input));
+//                        if (input.equals("1")) {
+//                            mainMenu();
+//                        }
+//                        if (input.equals("2")) {
+//                            printByCompany();
+//                        }
+//                        if (input.equals("3")) {
+//                            removeJobMenu();
+//                        }
+//                    } catch (InvalidChoiceException e) {
+//                        System.out.println("invalid choice. Try again.");
+//                        retryEntry = true;
+//                    }
+//                    System.out.println();
+//                } while (retryEntry);
+//            } else if (input.equals("4")) {
+//                removeJobMenu();
+//            } else if (input.equals("5")) {
+//                jl.saveJobs(filename);
+//                return;
+//            }
+//        }
+//    }
 
     // REQUIRES: the job list must not be empty
     // EFFECTS: prints the jobs list
@@ -288,9 +289,16 @@ public class Main {
         return;
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("ui.fxml"));
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.show();
+    }
 
     public static void main(String[] args) throws Exception {
-        new Main();
+        launch(args);
     }
 
 }
