@@ -55,9 +55,9 @@ class JobListTest {
     void TesttvalidJoblistRange() throws InvalidEntryException {
         jobs.addJob("coop","testTitle","testCompany", "4 months");
         jobs.addJob("coop","testTitle2","testCompany2", "4 months");
-        assertTrue(jobs.invalidJoblistRange(2));
+        assertFalse(jobs.invalidJoblistRange(2));
         assertFalse(jobs.invalidJoblistRange(1));
-        assertFalse(jobs.invalidJoblistRange(0));
+        assertTrue(jobs.invalidJoblistRange(0));
     }
 
     // Test that job retrieved in index is correct
@@ -77,7 +77,7 @@ class JobListTest {
     void testgetJobList() throws InvalidEntryException{
         jobs.addJob("coop","testTitle","testCompany", "4 months");
         Job j = jobs.getJob(0);
-        assertTrue(jobs.getJobList().contains(j));
+        assertFalse(jobs.getJobList().contains(j));
     }
 
 
