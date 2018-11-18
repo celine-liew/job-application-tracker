@@ -22,19 +22,19 @@ public class JobList extends Subject implements JoblistInterface  {
     final String ADDED= "added";
     final String UPDATED = "updated";
 
-    private CompanyList colist;// = new CompanyList();
+    //private CompanyList colist;// = new CompanyList();
 
-    public JobList(CompanyList companyList, List<List> jobLists) throws InvalidEntryException {
+    public JobList(List<List> jobLists) throws InvalidEntryException {
         jobs = new HashMap<>();
-        this.colist = companyList;
+        // this.colist = companyList;
         for (List<String> l : jobLists) {
             restoreJob(l.get(0), l.get(1), l.get(2), l.get(3), l.get(4), l.get(5), l.get(6), l.get(7));
         }
     }
 
-    public JobList(CompanyList companyList) {
+    public JobList() {
         jobs = new HashMap<>();
-        this.colist = companyList;
+        // this.colist = companyList;
     }
 
     public void restoreJob(String jobID, String jobType, String jobTitle, String company, String dateApplied, String jobStatus, String dateLastChanged, String coopDuration) throws InvalidEntryException {
@@ -48,7 +48,7 @@ public class JobList extends Subject implements JoblistInterface  {
         }
         int jobInt = Integer.parseInt(jobID);
         jobs.put(jobInt, restorejob);
-        colist.addJob(restorejob);
+        // colist.addJob(restorejob);
         if (jobInt > maxID)
             maxID = jobInt;
     }
@@ -111,7 +111,7 @@ public class JobList extends Subject implements JoblistInterface  {
             job = new FulltimeJob(jobID, jobTitle, company);
         }
         jobs.put(jobID, job);
-        colist.addJob(job);
+        // colist.addJob(job);
         job.printApplied();
         notifyEmailObserver(ADDED, job); //TODO
     }
