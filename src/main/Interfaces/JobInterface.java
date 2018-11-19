@@ -3,7 +3,7 @@ package Interfaces;
 public interface JobInterface {
 
 
-    public String getJobID();
+    public int getJobID();
 
     public String getJobTitle();
 

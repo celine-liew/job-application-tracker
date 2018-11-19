@@ -21,7 +21,7 @@ public class Save implements Savable {
         //parsed info
         try {
             for (JobInterface job : jobs) {
-                writer.append(job.getJobID());
+                writer.append(Integer.toString(job.getJobID()));
                 addComa();
                 writer.append(String.valueOf(job.getJobType()));
                 addComa();

@@ -7,6 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.*;
 
 import java.io.IOException;
@@ -27,6 +30,8 @@ public class Controller implements Initializable {
 
     @FXML
     ListView<String> listView;
+    @FXML
+    TableView<Job> tableView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,26 +46,43 @@ public class Controller implements Initializable {
             System.out.println("Invalid Entry Exception");
         }
 
-        List<Job> jobs = jl.getJobList();
-        List<String> test= new ArrayList<>();
-        if (jobs.size() > 0) {
-            for (Job job : jl.getJobList()) {
-                test.add(job.getCompany());
+        ObservableList<Job> jobs = FXCollections.observableArrayList(jl.getJobList());
+        tableView.setItems(jobs);
 
-                System.out.println("jobID:" + job.getJobID() +
-                        " " + job.getJobType() + " "
-                        + job.getJobTitle() + " " + job.getCompany()
-                        + " Applied: " + job.getDateApplied()
-                        + " Status: " + job.getJobStatus()
-                        + " CoopDuration: " + job.getCoopDuration());
-            }
-        } else {
-            System.out.println("No jobs applied.");
-        }
+        TableColumn<Job, String> jobIDCol = new TableColumn<>("Job ID");
+        jobIDCol.setCellValueFactory(new PropertyValueFactory("jobID"));
 
-        // get jobList
-        items = FXCollections.observableArrayList(test);
-        listView.setItems(items);
+        TableColumn<Job, String> jobTypeCol = new TableColumn<>("Job Type");
+        jobTypeCol.setCellValueFactory(new PropertyValueFactory("jobType"));
+
+        TableColumn<Job, String> jobTitleCol = new TableColumn<>("Job Title");
+        jobTitleCol.setCellValueFactory(new PropertyValueFactory("jobTitle"));
+
+        TableColumn<Job, String> companyCol = new TableColumn<>("Company");
+        companyCol.setCellValueFactory(new PropertyValueFactory("company"));
+
+        TableColumn<Job, String> dateAppliedCol = new TableColumn<>("Date Applied");
+        dateAppliedCol.setCellValueFactory(new PropertyValueFactory("dateApplied"));
+
+        TableColumn<Job, String> dateLastChangedCol = new TableColumn<>("Last Changed");
+        dateLastChangedCol.setCellValueFactory(new PropertyValueFactory("dateLastChanged"));
+
+        TableColumn<Job, String> jobStatusCol = new TableColumn<>("Job Status");
+        jobStatusCol.setCellValueFactory(new PropertyValueFactory("jobStatus"));
+
+        TableColumn<Job, String> coopDurationCol = new TableColumn<>("Coop Duration");
+        coopDurationCol.setCellValueFactory(new PropertyValueFactory("coopDuration"));
+
+        tableView.getColumns().setAll(
+                jobIDCol,
+                jobTypeCol,
+                jobTitleCol,
+                companyCol,
+                dateAppliedCol,
+                dateLastChangedCol,
+                jobStatusCol,
+                coopDurationCol
+        );
     }
 
     @FXML
