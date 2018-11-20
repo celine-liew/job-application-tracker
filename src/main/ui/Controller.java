@@ -6,30 +6,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import model.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-
+//reference on tableView: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TableView.html
 public class Controller implements Initializable {
 
     private JobList jl;
-    Scanner scanner = new Scanner(System.in);
+    //Scanner scanner = new Scanner(System.in);
     private String fileName;
 
     ObservableList<String> items;
 
-    @FXML
-    ListView<String> listView;
+    //@FXML
+    //ListView<String> listView;
     @FXML
     TableView<Job> tableView;
 
@@ -47,7 +46,7 @@ public class Controller implements Initializable {
         }
 
         ObservableList<Job> jobs = FXCollections.observableArrayList(jl.getJobList());
-        tableView.setItems(jobs);
+
 
         TableColumn<Job, String> jobIDCol = new TableColumn<>("Job ID");
         jobIDCol.setCellValueFactory(new PropertyValueFactory("jobID"));
@@ -69,20 +68,27 @@ public class Controller implements Initializable {
 
         TableColumn<Job, String> jobStatusCol = new TableColumn<>("Job Status");
         jobStatusCol.setCellValueFactory(new PropertyValueFactory("jobStatus"));
+        jobStatusCol.setCellFactory(TextFieldTableCell.<Job>forTableColumn());
+        jobStatusCol.setOnEditCommit(
+                (TableColumn.CellEditEvent<Job, String> t) -> {
+                    ((Job) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                    ).setJobStatus(t.getNewValue());
+                });
 
         TableColumn<Job, String> coopDurationCol = new TableColumn<>("Coop Duration");
         coopDurationCol.setCellValueFactory(new PropertyValueFactory("coopDuration"));
-
+        tableView.setEditable(true);
+        tableView.setItems(jobs);
         tableView.getColumns().setAll(
                 jobIDCol,
                 jobTypeCol,
                 jobTitleCol,
                 companyCol,
                 dateAppliedCol,
-                dateLastChangedCol,
                 jobStatusCol,
-                coopDurationCol
-        );
+                coopDurationCol,
+                dateLastChangedCol);
     }
 
     @FXML
