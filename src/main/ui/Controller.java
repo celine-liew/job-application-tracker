@@ -10,6 +10,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import model.*;
 
 import java.io.IOException;
@@ -94,5 +99,34 @@ public class Controller implements Initializable {
     @FXML
     public void addItem() {
         items.add("asdfds");
+    }
+
+    //TODO
+    @FXML
+    TextFlow textFlow;
+
+    //https://www.tutorialspoint.com/javafx/layout_panes_textflow.htm
+    public StackPane showText() {
+        Text text1 = new Text("Welcome to your Job Application Database ");
+        //Set font to the text
+        text1.setFont(new Font(15));
+        text1.setFill(Color.DARKSLATEBLUE);
+
+        Text text2 = new Text("Testing 123");
+
+        //Set font to the text
+        text2.setFont(new Font(15));
+
+        //Retrieve the observable list of the TextFlow Pane
+        textFlow = new TextFlow();
+        ObservableList list = textFlow.getChildren();
+
+        //Adding cylinder to the pane
+        list.addAll(text1, text2);
+
+        //Creating a scene object
+        StackPane scene = new StackPane(textFlow);
+        return scene;
+
     }
 }

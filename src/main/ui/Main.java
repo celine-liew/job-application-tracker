@@ -8,8 +8,16 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.*;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 import java.util.*;
 
@@ -282,24 +290,27 @@ public class Main extends Application {
         return;
     }
 
-    public void invalid3choice(int inter) throws InvalidChoiceException, NumberFormatException {
-        if (inter == 0 || inter > 3) {
-            throw new InvalidChoiceException();
-        }
-        return;
-    }
+//    public void invalid3choice(int inter) throws InvalidChoiceException, NumberFormatException {
+//        if (inter == 0 || inter > 3) {
+//            throw new InvalidChoiceException();
+//        }
+//        return;
+//    }
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("ui.fxml"));
         primaryStage.setTitle("Job Application Database");
         primaryStage.setScene(new Scene(root, 800, 600));
+        //primaryStage.setScene(textFlow());
         primaryStage.show();
-    }
 
+
+    }
     public static void main(String[] args) throws Exception {
         launch(args);
     }
+
 
 }
 
