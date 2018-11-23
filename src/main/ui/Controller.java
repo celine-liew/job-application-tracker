@@ -6,8 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.StackPane;
@@ -30,12 +29,25 @@ public class Controller implements Initializable {
     //Scanner scanner = new Scanner(System.in);
     private String fileName;
 
-    ObservableList<String> items;
+    ObservableList<Job> jobs;
 
-    //@FXML
-    //ListView<String> listView;
     @FXML
     TableView<Job> tableView;
+
+    @FXML
+    ChoiceBox<String> jobType;
+
+    @FXML
+    ChoiceBox<String> coopDuration;
+
+    @FXML
+    Button addJobButton;
+
+    @FXML
+    TextField jobTitleField;
+
+    @FXML
+    TextField companyField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,7 +62,7 @@ public class Controller implements Initializable {
             System.out.println("Invalid Entry Exception");
         }
 
-        ObservableList<Job> jobs = FXCollections.observableArrayList(jl.getJobList());
+        jobs = FXCollections.observableArrayList(jl.getJobList());
 
 
         TableColumn<Job, String> jobIDCol = new TableColumn<>("Job ID");
@@ -94,39 +106,20 @@ public class Controller implements Initializable {
                 jobStatusCol,
                 coopDurationCol,
                 dateLastChangedCol);
+
+        jobType.setItems(FXCollections.observableArrayList("Coop", "Full-time"));
+        coopDuration.setItems(FXCollections.observableArrayList("4 Month", "8 Month", "1 Year"));
     }
 
     @FXML
-    public void addItem() {
-        items.add("asdfds");
-    }
-
-    //TODO
-    @FXML
-    TextFlow textFlow;
-
-    //https://www.tutorialspoint.com/javafx/layout_panes_textflow.htm
-    public StackPane showText() {
-        Text text1 = new Text("Welcome to your Job Application Database ");
-        //Set font to the text
-        text1.setFont(new Font(15));
-        text1.setFill(Color.DARKSLATEBLUE);
-
-        Text text2 = new Text("Testing 123");
-
-        //Set font to the text
-        text2.setFont(new Font(15));
-
-        //Retrieve the observable list of the TextFlow Pane
-        textFlow = new TextFlow();
-        ObservableList list = textFlow.getChildren();
-
-        //Adding cylinder to the pane
-        list.addAll(text1, text2);
-
-        //Creating a scene object
-        StackPane scene = new StackPane(textFlow);
-        return scene;
-
+    public void addJob() throws InvalidEntryException {
+        System.out.println(companyField.getText());
+        System.out.println(jobTitleField.getText());
+        System.out.println(jobType.getValue());
+        System.out.println(coopDuration.getValue());
+        coopDuration.setDisable(true);
+        jl.addJob(jobType.getValue(), jobTitleField.getText(), companyField.getText(), "n/a");
+        jobs = FXCollections.observableArrayList(jl.getJobList());
+        tableView.setItems(jobs);
     }
 }
