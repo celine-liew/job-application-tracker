@@ -9,9 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import model.*;
@@ -23,6 +25,8 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 //reference on tableView: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TableView.html
+//reference for ChoiceBox: https://docs.oracle.com/javafx/2/ui_controls/choice-box.htm
+//reference for TextField: https://docs.oracle.com/javafx/2/ui_controls/text-field.htm
 public class Controller implements Initializable {
 
     private JobList jl;
@@ -49,20 +53,12 @@ public class Controller implements Initializable {
     @FXML
     TextField companyField;
 
+    @FXML
+    Label label;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        fileName = new String("inputFile.csv");
-        try {
-            Loadable load = new Load(fileName);
-            load.loadFile();
-            jl = new JobList(load.getParsedLines());
-        } catch (IOException | NullPointerException e) {
-            System.out.println("No file to load.");
-        } catch (InvalidEntryException e) {
-            System.out.println("Invalid Entry Exception");
-        }
-
-        jobs = FXCollections.observableArrayList(jl.getJobList());
+        jl = new JobList();
 
 
         TableColumn<Job, String> jobIDCol = new TableColumn<>("Job ID");
@@ -96,7 +92,9 @@ public class Controller implements Initializable {
         TableColumn<Job, String> coopDurationCol = new TableColumn<>("Coop Duration");
         coopDurationCol.setCellValueFactory(new PropertyValueFactory("coopDuration"));
         tableView.setEditable(true);
-        tableView.setItems(jobs);
+
+        loadToTable();
+
         tableView.getColumns().setAll(
                 jobIDCol,
                 jobTypeCol,
@@ -118,8 +116,50 @@ public class Controller implements Initializable {
         System.out.println(jobType.getValue());
         System.out.println(coopDuration.getValue());
         coopDuration.setDisable(true);
-        jl.addJob(jobType.getValue(), jobTitleField.getText(), companyField.getText(), "n/a");
+
+        if (companyField.getText().length() <= 1 || jobTitleField.getText().length() <= 1){
+            setLabel(1);
+        }
+        else if (jobType.getValue() == null) {
+            setLabel(2);
+        } else {
+            jl.addJob(jobType.getValue(), jobTitleField.getText(), companyField.getText(), "n/a");
+            loadToTable(); //have to reset this everytime the addJob is executed. abstracted to below.
+        }
+    }
+
+
+    public void load() {
+        fileName = new String("inputFile.csv");
+        try {
+            Loadable load = new Load(fileName);
+            load.loadFile();
+            jl = new JobList(load.getParsedLines());
+        } catch (IOException | NullPointerException e) {
+            System.out.println("No file to load.");
+        } catch (InvalidEntryException e) {
+            System.out.println("Invalid Entry Exception");
+        }
+
+        loadToTable();
+
+
+    }
+
+    public void loadToTable() {
         jobs = FXCollections.observableArrayList(jl.getJobList());
         tableView.setItems(jobs);
+    }
+
+
+    public void setLabel(int errortype) {
+        if (errortype == 1) {
+            label.setText("Please enter valid job title and company.");
+            label.setFont(Font.font("Helvetica", 16));
+            //hbox.getChildren().add((text));
+        } if (errortype == 2) {
+            label.setText("Please select job type");
+            label.setFont(Font.font("Helvetica", 16));
+        }
     }
 }

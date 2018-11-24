@@ -302,7 +302,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("ui.fxml"));
         primaryStage.setTitle("Job Application Database");
         primaryStage.setScene(new Scene(root, 800, 600));
-        //primaryStage.setScene(textFlow());
+        //primaryStage.setScene(label());
         primaryStage.show();
 
 

@@ -132,7 +132,7 @@ public abstract class Job implements JobInterface {
 //        LocalDate parsedDate = LocalDate.parse(datechanged, formatter);
         String parsedDate = dateApplied.format(DateTimeFormatter.ofPattern("MMM dd uuuu"));
         return parsedDate;
-    }
+    } //Have to change this to Property
 */
 
     public StringProperty dateAppliedProperty() {
@@ -174,6 +174,7 @@ public abstract class Job implements JobInterface {
     // EFFECTS: sets the job status to a new status
     public void setJobStatus(String jobStatus) {
         this.jobStatusProperty().set(jobStatus);
+        this.setDateLastChanged();
     }
 
     public StringProperty jobStatusProperty() {
@@ -211,6 +212,7 @@ public abstract class Job implements JobInterface {
         }
     }
 
+    //not needed anymore since i deleted colist (reflexive relationship)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
