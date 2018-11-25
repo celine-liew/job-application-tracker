@@ -2,6 +2,8 @@ package ui;
 
 import Exceptions.InvalidEntryException;
 import Interfaces.Loadable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,20 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import model.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
 //reference on tableView: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TableView.html
 //reference for ChoiceBox: https://docs.oracle.com/javafx/2/ui_controls/choice-box.htm
@@ -31,7 +25,7 @@ public class Controller implements Initializable {
 
     private JobList jl;
     //Scanner scanner = new Scanner(System.in);
-    private String fileName;
+    private String fileName = new String("inputFile.csv");;
 
     ObservableList<Job> jobs;
 
@@ -60,6 +54,16 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         jl = new JobList();
 
+
+        jobType.get
+        jobType.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener<Tab>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+                        System.out.println("Tab Selection changed");
+                    }
+                }
+        );
 
         TableColumn<Job, String> jobIDCol = new TableColumn<>("Job ID");
         jobIDCol.setCellValueFactory(new PropertyValueFactory("jobID"));
@@ -130,7 +134,6 @@ public class Controller implements Initializable {
 
 
     public void load() {
-        fileName = new String("inputFile.csv");
         try {
             Loadable load = new Load(fileName);
             load.loadFile();
@@ -142,8 +145,12 @@ public class Controller implements Initializable {
         }
 
         loadToTable();
+    }
 
-
+    public void save() throws IOException {
+        if (!jl.jobLisEmpty()){
+            jl.saveJobs(fileName);
+        }
     }
 
     public void loadToTable() {
@@ -151,15 +158,30 @@ public class Controller implements Initializable {
         tableView.setItems(jobs);
     }
 
+    public void jobTypeClicked() {
+        System.out.println("clicked");
+    }
 
-    public void setLabel(int errortype) {
-        if (errortype == 1) {
+
+    public void setLabel(int textPrint) {
+        if (textPrint == 1) {
             label.setText("Please enter valid job title and company.");
-            label.setFont(Font.font("Helvetica", 16));
-            //hbox.getChildren().add((text));
-        } if (errortype == 2) {
+        } else if (textPrint == 2) {
             label.setText("Please select job type");
-            label.setFont(Font.font("Helvetica", 16));
+        } else if (textPrint == 3) {
+            label.setText("Job deleted!!");
+        } else if (textPrint == 4) {
+            label.setText("Jobs Saved!!");
         }
+        label.setFont(Font.font("Helvetica", 16));
+    }
+
+    public void deleteJob(){
+        System.out.println("delete");
+        Job selectedJob = tableView.getSelectionModel().getSelectedItem();
+        System.out.println(selectedJob.getJobID());
+        jl.removeJob(selectedJob.getJobID());
+        loadToTable();
+        setLabel(3);
     }
 }

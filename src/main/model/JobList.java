@@ -91,8 +91,8 @@ public class JobList extends Subject implements JoblistInterface  {
     @Override
     public void removeJob(int i) {
 //        emailServer.updateJob(REMOVED, jobs.get(i).jobType, jobs.get(i).jobTitle, jobs.get(i).company);
-        notifyEmailObserver(REMOVED, job); //TODO
-        jobs.get(i).removeListBelongs();
+        notifyEmailObserver(REMOVED, jobs.get(i)); //TODO
+        // jobs.get(i).removeListBelongs();
         jobs.remove(i);
     }
 
