@@ -2,8 +2,6 @@ package ui;
 
 import Exceptions.InvalidEntryException;
 import Interfaces.Loadable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -187,11 +185,13 @@ public class Controller implements Initializable {
         }
 
         loadToTable();
+        setLabel(6);
     }
 
     public void save() throws IOException {
         if (!jl.jobLisEmpty()){
             jl.saveJobs(fileName);
+            setLabel(4);
         }
     }
 
@@ -211,7 +211,10 @@ public class Controller implements Initializable {
             label.setText("Jobs Saved!!");
         } else if (textPrint == 5) {
             label.setText("Enter coop duration");
-        } else {
+        } else if (textPrint == 6) {
+            label.setText("File loaded!");
+        }
+        else {
             label.setText("");
         }
         label.setFont(Font.font("Helvetica", 16));
@@ -224,5 +227,9 @@ public class Controller implements Initializable {
         jl.removeJob(selectedJob.getJobID());
         loadToTable();
         setLabel(3);
+    }
+
+    public void exitApp(){
+        System.exit(0);
     }
 }
