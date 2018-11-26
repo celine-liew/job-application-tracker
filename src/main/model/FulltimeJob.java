@@ -12,7 +12,7 @@ public class FulltimeJob extends Job {
     //EFFECTS: Create a new full time job
     public FulltimeJob(int jobID, String jobTitle, String company) throws InvalidEntryException {
         super(jobID, jobTitle, company);
-        this.jobTypeProperty().set(CO_OP);
+        this.jobTypeProperty().set(FULL_TIME);
     }
 
     public FulltimeJob(String jobID, String jobType, String jobTitle, String company,

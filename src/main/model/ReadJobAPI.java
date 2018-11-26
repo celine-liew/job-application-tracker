@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +15,7 @@ public class ReadJobAPI {
 
     //Github API
     //Sample JsonParser from: https://github.ugrad.cs.ubc.ca/CPSC210-2018W-T1/JsonParserExample
-    public Map<String, String> retreveData () throws MalformedURLException, IOException, JSONException {
+    public Map<String, String> retreveData () {
         BufferedReader br = null;
 
         try {
@@ -37,33 +35,47 @@ public class ReadJobAPI {
 
             JSONArray jArray = new JSONArray(sb.toString()); //TODO - instead of HTML
             JSONObject jo = jArray.getJSONObject(randomInt());
-            return storeData(jo);
 
-        } finally {
             if (br != null) {
                 br.close();
             }
+            return storeData(jo);
+
+        } catch (Exception e){
+            System.out.println("retrieve data error");
         }
+
+        // return empty map
+        return new HashMap<>();
+
     }
 
     public String splitURL(JSONObject jo) throws JSONException {
         String howtoapply = jo.getString("how_to_apply");
         if (howtoapply.contains("<p>")) {
-            String[] output = howtoapply.split("\">");
-            String[] output2 = output[1].split("</a>");
+            String[] output = howtoapply.split("<p>");
+            String[] output2 = output[1].split("</p>");
+            System.out.println(output2);
             return output2[0];
+
         }
         return "";
     }
 
-    private Map<String, String> storeData(JSONObject jo) throws JSONException{
+    private Map<String, String> storeData(JSONObject jo) {
         Map jobReco = new HashMap();
-        jobReco.put("type",jo.getString("type"));
-        jobReco.put("title",jo.getString("title"));
-        jobReco.put("company",jo.getString("company"));
-        jobReco.put("location",jo.getString("location"));
-        jobReco.put("url",splitURL(jo));
+        try {
+            jobReco.put("type",jo.getString("type"));
+            jobReco.put("title",jo.getString("title"));
+            jobReco.put("company",jo.getString("company"));
+            jobReco.put("location",jo.getString("location"));
+            jobReco.put("url",this.splitURL(jo));
+        } catch (Exception e) {
+            // stub
+            System.out.println("store data error");
+        }
         return jobReco;
+
     }
 
     //TODO: to get top 5 latest jobs

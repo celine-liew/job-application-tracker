@@ -100,7 +100,7 @@ public class JobList extends Subject implements JoblistInterface  {
     // MODIFIES: this
     // EFFECTS: creates a new job and add to job list.
     public void addJob(String jobType, String jobTitle, String company, String coopTerm) throws InvalidEntryException {
-        if (jobType.equalsIgnoreCase("1")) {
+        if (jobType.equalsIgnoreCase(CO_OP)) {
             jobID = maxID + 1;
             maxID++;
             job = new CoopJob(jobID, jobTitle, company);

@@ -16,12 +16,15 @@ import model.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 //reference on tableView: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TableView.html
 //reference for ChoiceBox: https://docs.oracle.com/javafx/2/ui_controls/choice-box.htm
 //reference for TextField: https://docs.oracle.com/javafx/2/ui_controls/text-field.htm
 public class Controller implements Initializable {
+    final String FULL_TIME = "Full-time";
+    final String CO_OP = "Coop";
 
     private JobList jl;
     //Scanner scanner = new Scanner(System.in);
@@ -50,20 +53,38 @@ public class Controller implements Initializable {
     @FXML
     Label label;
 
+    @FXML
+    Label apiJobType;
+
+    @FXML
+    Label apiTitle;
+
+    @FXML
+    Label apiCompany;
+
+    @FXML
+    Label apiLocation;
+
+    @FXML
+    Label apiApplyLink;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         jl = new JobList();
 
+        tableView.setPlaceholder(new Label("Add a new job from below or load existing jobs from file"));
 
-        jobType.get
-        jobType.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Tab>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-                        System.out.println("Tab Selection changed");
-                    }
-                }
-        );
+        // disable coop when fulltime selected
+        // https://www.youtube.com/watch?v=WZGyP57IH6M
+        jobType.getSelectionModel().selectedItemProperty().addListener( (v, oldValue, newValue) -> {
+            if (newValue.equals(FULL_TIME)) {
+                coopDuration.getSelectionModel().clearSelection();
+                coopDuration.setDisable(true);
+            } else {
+                coopDuration.setDisable(false);
+            }
+        });
+
 
         TableColumn<Job, String> jobIDCol = new TableColumn<>("Job ID");
         jobIDCol.setCellValueFactory(new PropertyValueFactory("jobID"));
@@ -98,6 +119,7 @@ public class Controller implements Initializable {
         tableView.setEditable(true);
 
         loadToTable();
+        setLabel(10);
 
         tableView.getColumns().setAll(
                 jobIDCol,
@@ -109,24 +131,44 @@ public class Controller implements Initializable {
                 coopDurationCol,
                 dateLastChangedCol);
 
-        jobType.setItems(FXCollections.observableArrayList("Coop", "Full-time"));
+        jobType.setItems(FXCollections.observableArrayList(CO_OP, FULL_TIME));
         coopDuration.setItems(FXCollections.observableArrayList("4 Month", "8 Month", "1 Year"));
+
+        ReadJobAPI readJobAPI;
+        Map<String, String> jobReco;
+        readJobAPI = new ReadJobAPI();
+        jobReco = readJobAPI.retreveData();
+
+        apiJobType.setText(jobReco.get("type"));
+        apiTitle.setText(jobReco.get("title"));
+        apiCompany.setText(jobReco.get("company"));
+        apiLocation.setText(jobReco.get("location"));
+        apiApplyLink.setText(jobReco.get("url"));
     }
 
     @FXML
     public void addJob() throws InvalidEntryException {
-        System.out.println(companyField.getText());
-        System.out.println(jobTitleField.getText());
-        System.out.println(jobType.getValue());
-        System.out.println(coopDuration.getValue());
-        coopDuration.setDisable(true);
+//        System.out.println(companyField.getText());
+//        System.out.println(jobTitleField.getText());
+//        System.out.println(jobType.getValue());
+//        System.out.println(coopDuration.getValue());
 
         if (companyField.getText().length() <= 1 || jobTitleField.getText().length() <= 1){
             setLabel(1);
         }
         else if (jobType.getValue() == null) {
             setLabel(2);
-        } else {
+        } else if (jobType.getValue().equals(CO_OP)){
+            if (coopDuration.getValue() == null) {
+                setLabel(5);
+            } else {
+                // System.out.println(coopDuration.getValue());
+                jl.addJob(jobType.getValue(), jobTitleField.getText(), companyField.getText(), coopDuration.getValue());
+                loadToTable(); //have to reset this everytime the addJob is executed. abstracted to below.
+            }
+        }
+        else {
+            System.out.println(jobType.getValue());
             jl.addJob(jobType.getValue(), jobTitleField.getText(), companyField.getText(), "n/a");
             loadToTable(); //have to reset this everytime the addJob is executed. abstracted to below.
         }
@@ -158,11 +200,6 @@ public class Controller implements Initializable {
         tableView.setItems(jobs);
     }
 
-    public void jobTypeClicked() {
-        System.out.println("clicked");
-    }
-
-
     public void setLabel(int textPrint) {
         if (textPrint == 1) {
             label.setText("Please enter valid job title and company.");
@@ -172,6 +209,10 @@ public class Controller implements Initializable {
             label.setText("Job deleted!!");
         } else if (textPrint == 4) {
             label.setText("Jobs Saved!!");
+        } else if (textPrint == 5) {
+            label.setText("Enter coop duration");
+        } else {
+            label.setText("");
         }
         label.setFont(Font.font("Helvetica", 16));
     }

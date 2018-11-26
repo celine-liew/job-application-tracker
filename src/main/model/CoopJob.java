@@ -45,6 +45,7 @@ public class CoopJob extends Job {
     }
 
     public void setCoopDuration (String coopTerm){
+        /*
         int coopTermInt = Integer.parseInt(coopTerm);
 
         switch (coopTermInt) {
@@ -55,8 +56,8 @@ public class CoopJob extends Job {
             case 3: coopDuration = "1 year";
             break;
         }
-
-        super.setCoopDuration(coopDuration);
+*/
+        super.setCoopDuration(coopTerm);
     }
 
 }
