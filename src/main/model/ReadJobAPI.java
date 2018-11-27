@@ -33,7 +33,7 @@ public class ReadJobAPI {
                 sb.append(System.lineSeparator());
             }
 
-            JSONArray jArray = new JSONArray(sb.toString()); //TODO - instead of HTML
+            JSONArray jArray = new JSONArray(sb.toString());
             JSONObject jo = jArray.getJSONObject(randomInt());
 
             if (br != null) {
@@ -78,7 +78,7 @@ public class ReadJobAPI {
 
     }
 
-    //TODO: to get top 5 latest jobs
+    //to get top 5 latest jobs
     private int randomInt(){
         Random random = new Random();
         int randValue = random.nextInt(5);
