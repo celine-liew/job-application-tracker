@@ -113,7 +113,7 @@ public class JobList extends Subject implements JoblistInterface  {
         jobs.put(jobID, job);
         // colist.addJob(job);
         job.printApplied();
-        notifyEmailObserver(ADDED, job); //TODO
+        notifyEmailObserver(ADDED, job);
     }
 
     public void newStatusJob(int i, String newStatus) {
@@ -121,7 +121,7 @@ public class JobList extends Subject implements JoblistInterface  {
         String OLD_STATUS = (jobs.get(i).getJobStatus());
         jobs.get(i).setJobStatus(newStatus);
         jobs.get(i).setDateLastChanged();
-        notifyEmailObserver(OLD_STATUS, newStatus, UPDATED, jobs.get(i)); //TODO
+        notifyEmailObserver(OLD_STATUS, newStatus, UPDATED, jobs.get(i));
     }
 
     }

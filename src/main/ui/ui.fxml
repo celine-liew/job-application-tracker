@@ -155,7 +155,7 @@
       <TableView fx:id="tableView" editable="true" prefHeight="250.0" prefWidth="800.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="-1.0" text="C2" />
+          <TableColumn prefWidth="75.0" text="C2" />
         </columns>
       </TableView>
    </center>
