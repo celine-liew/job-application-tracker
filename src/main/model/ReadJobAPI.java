@@ -1,9 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -13,8 +11,8 @@ import org.json.JSONObject;
 
 public class ReadJobAPI {
 
-    //Github API
-    //Sample JsonParser from: https://github.ugrad.cs.ubc.ca/CPSC210-2018W-T1/JsonParserExample
+    // Github API
+    // Sample JsonParser from: https://github.ugrad.cs.ubc.ca/CPSC210-2018W-T1/JsonParserExample
     public Map<String, String> retreveData () {
         BufferedReader br = null;
 

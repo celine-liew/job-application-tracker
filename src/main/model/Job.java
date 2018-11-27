@@ -20,20 +20,21 @@ import java.util.Objects;
 
 
 public abstract class Job implements JobInterface {
-
+/*
     // protected String jobType;
     // protected String jobTitle; //private so that it is not visible outside of this Class. All operations done by getters/setters.
     // protected String company;
     // public LocalDate dateApplied; //Changed to date time function in Java. Set to public for testing.
     // protected String jobStatus;
     // protected LocalDate dateLastChanged;
-    public final String APPLIED = "Applied";
     // protected String coopDuration;
     // protected int jobID;
+*/
+    public final String APPLIED = "Applied";
     private List<OrgListInterface> listBelongs = new ArrayList<>();
     protected final String FULL_TIME = "Full-time";
     protected final String CO_OP = "Coop";
-    private String loaded;
+    //private String loaded;
 
     private IntegerProperty jobID;
     private StringProperty jobType;
@@ -212,7 +213,7 @@ public abstract class Job implements JobInterface {
         }
     }
 
-    //not needed anymore since i deleted colist (reflexive relationship)
+    //not needed anymore (reflexive relationship) - not in GUI
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
