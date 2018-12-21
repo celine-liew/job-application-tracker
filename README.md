@@ -4,7 +4,7 @@
 
 ## Visuals
 
-[a relative link] (java visuals.gif)
+[a relative link] (docs/java visuals.gif)
 
 ## Comments
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
