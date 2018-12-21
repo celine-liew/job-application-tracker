@@ -4,7 +4,7 @@
 
 ## Visuals
 
-! [job visuals] (https://github.com/fisharwoman/job-application-database/blob/master/docs/java%20visuals.gif)
+! [] (javavisuals.gif)
 
 ## Comments
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
